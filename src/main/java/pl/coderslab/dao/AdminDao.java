@@ -1,6 +1,7 @@
 package pl.coderslab.dao;
 
 import org.mindrot.jbcrypt.BCrypt;
+import pl.coderslab.model.Admin;
 import pl.coderslab.utils.DbUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,8 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static pl.coderslab.utils.DbUtil.getConnection;
 
 
 public class AdminDao {
@@ -34,10 +37,11 @@ public class AdminDao {
 
     public List<Admin> findAll() {
         List<Admin> admins = new ArrayList<>();
-        try (Connection connection = DbUtil.getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL_ADMINS);
-             ResultSet resultSet = statement.getResultSet();
-        ) {
+        try (Connection connection = DbUtil.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(FIND_ALL_ADMINS);
+            statement.executeQuery();
+            ResultSet resultSet = statement.getResultSet();
+
             while (resultSet.next()) {
                 Admin adminToAdd = new Admin();
                 adminToAdd.setId(resultSet.getInt("id"));
@@ -107,19 +111,37 @@ public class AdminDao {
 
             if (isDeleted == 1) {
                 log.info("User with id {} deleted", id);
-                return isDeleted;
             } else {
                 log.warn("User with id {} NOT deleted", id);
-                return isDeleted;
             }
+            return isDeleted;
         } catch (SQLException e) {
             log.error(e.getStackTrace());
             return 0;
         }
     }
 
-    public void update(Admin admin) {
+    public int update(Admin admin) {
+        try (Connection conn = getConnection()) {
+            PreparedStatement statement = conn.prepareStatement(UPDATE_ADMIN);
+            statement.setString(1, admin.getFirstName());
+            statement.setString(2, admin.getLastName());
+            statement.setString(3,hashPassword(admin.getPassword()));
+            statement.setInt(4,admin.getId());
+            int isUpdated = statement.executeUpdate();
 
+            if (isUpdated == 1) {
+                log.info("User with id {} successfully updated", admin.getId());
+
+            } else {
+                log.info("User with id {} NOT updated", admin.getId());
+            }
+            return isUpdated;
+
+        } catch (SQLException e) {
+            log.error(e.getStackTrace());
+            return 0;
+        }
     }
 
     public String hashPassword(String password) {

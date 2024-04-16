@@ -1,6 +1,8 @@
 package pl.coderslab.web;
 
+import pl.coderslab.dao.AdminDao;
 import pl.coderslab.dao.BookDao;
+import pl.coderslab.model.Admin;
 import pl.coderslab.model.Book;
 
 import javax.servlet.ServletException;
@@ -18,10 +20,10 @@ import java.util.List;
 public class HomeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BookDao bookDao = new BookDao();
-        List<Book> books = bookDao.findAll();
-        System.out.println(books);
-        System.out.println("Home servlet is working..");
+        AdminDao adminDao = new AdminDao();
+
+        List<Admin> admins = adminDao.findAll();
+        System.out.println(admins);
 
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }
