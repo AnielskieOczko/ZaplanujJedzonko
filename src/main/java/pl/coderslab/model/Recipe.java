@@ -12,6 +12,7 @@ import lombok.ToString;
 public class Recipe {
 
   private int id;
+
   private String name;
 
   private String ingredients;
