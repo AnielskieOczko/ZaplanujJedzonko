@@ -1,5 +1,6 @@
 package pl.coderslab.web;
 
+import lombok.extern.java.Log;
 import pl.coderslab.dao.BookDao;
 import pl.coderslab.model.Book;
 
@@ -15,14 +16,13 @@ import java.util.List;
  * Do not change servlet address !!!
  */
 @WebServlet("")
+@Log
 public class HomeServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        BookDao bookDao = new BookDao();
-        List<Book> books = bookDao.findAll();
-        System.out.println(books);
-        System.out.println("Home servlet is working..");
-
-        getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
-    }
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
+    log.info("Home servlet is working.");
+  }
 }
