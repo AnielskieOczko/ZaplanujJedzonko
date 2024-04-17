@@ -3,10 +3,12 @@ package pl.coderslab.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class DayName {
     private int id;
     private String name;
@@ -19,8 +21,4 @@ public class DayName {
         this.displayOrder = displayOrder;
     }
 
-    @Override
-    public String toString() {
-        return "DayName [id=" + id + ", name=" + name + ", displayOrder=" + displayOrder + "]";
-    }
 }

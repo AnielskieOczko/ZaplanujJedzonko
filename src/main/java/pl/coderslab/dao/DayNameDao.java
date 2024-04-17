@@ -14,13 +14,13 @@ import java.util.List;
 public class DayNameDao {
     private static final String FIND_ALL_DAY_NAMES_QUERY = "SELECT * FROM day_name;";
     /**
-     * Return all days
+     * Return all day_name records from database
      *
-     * @return List<DayName>
+     * @return List of DayName instances created from retrieved records
      */
 
     public List<DayName> findAll() {
-        List<DayName> dayList = new ArrayList<>();
+        List<DayName> dayNameList = new ArrayList<>();
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_DAY_NAMES_QUERY)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -29,12 +29,12 @@ public class DayNameDao {
                 dayNameToAdd.setId(resultSet.getInt("id"));
                 dayNameToAdd.setName(resultSet.getString("name"));
                 dayNameToAdd.setDisplayOrder(resultSet.getInt("display_order"));
-                dayList.add(dayNameToAdd);
+                dayNameList.add(dayNameToAdd);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return dayList;
+        return dayNameList;
     }
 
 
