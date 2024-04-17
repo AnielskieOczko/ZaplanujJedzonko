@@ -19,11 +19,8 @@ import java.util.List;
 @WebServlet("")
 public class HomeServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AdminDao adminDao = new AdminDao();
 
-        List<Admin> admins = adminDao.findAll();
-        System.out.println(admins);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         getServletContext().getRequestDispatcher("/home.jsp").forward(request, response);
     }

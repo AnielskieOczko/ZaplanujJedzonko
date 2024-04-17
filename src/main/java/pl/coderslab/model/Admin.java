@@ -3,7 +3,6 @@ package pl.coderslab.model;
 import lombok.*;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Setter
 @Getter
 @ToString
@@ -16,4 +15,13 @@ public class Admin {
     private String password;
     private int superAdmin;
     private int enable;
+
+    public Admin(String firstName, String lastName, String email, String password, Integer superAdmin, Integer enable) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.superAdmin = superAdmin;
+        this.enable = enable;
+    }
 }

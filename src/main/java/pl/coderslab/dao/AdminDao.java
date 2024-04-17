@@ -23,7 +23,7 @@ public class AdminDao {
     private static final String CREATE_ADMIN = """
             INSERT INTO admins 
             (first_name, last_name, email, password, superadmin) 
-            values (?, ?, ?, ?, 0);
+            values (?, ?, ?, ?, ?);
             """;
     private static final String UPDATE_ADMIN = """
             UPDATE admins
@@ -59,75 +59,87 @@ public class AdminDao {
         return admins;
     }
 
-    public Admin getById(Integer id) {
-        Admin adminToReturn = null;
-        try (Connection connection = DbUtil.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(GET_ADMIN_BY_ID, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, id);
-            statement.executeQuery();
-            ResultSet resultSet = statement.getResultSet();
-
-            while (resultSet.next()) {
-                adminToReturn = new Admin();
-                adminToReturn.setId(resultSet.getInt("id"));
-                adminToReturn.setFirstName(resultSet.getString("first_name"));
-                adminToReturn.setLastName(resultSet.getString("last_name"));
-                adminToReturn.setEmail(resultSet.getString("email"));
-                adminToReturn.setPassword(resultSet.getString("password"));
-                adminToReturn.setSuperAdmin(resultSet.getInt("superAdmin"));
-                adminToReturn.setEnable(resultSet.getInt("enable"));
+    public Admin read(Integer adminId) {
+        Admin adminToReturn = new Admin();
+        try (Connection connection = DbUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_ADMIN_BY_ID)
+        ) {
+            statement.setInt(1, adminId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    adminToReturn.setId(resultSet.getInt("id"));
+                    adminToReturn.setFirstName(resultSet.getString("first_name"));
+                    adminToReturn.setLastName(resultSet.getString("last_name"));
+                    adminToReturn.setEmail(resultSet.getString("email"));
+                    adminToReturn.setPassword(resultSet.getString("password"));
+                    adminToReturn.setSuperAdmin(resultSet.getInt("superAdmin"));
+                    adminToReturn.setEnable(resultSet.getInt("enable"));
+                }
             }
-        } catch (SQLException e) {
-            log.error(e.getStackTrace());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return adminToReturn;
     }
 
     public Admin create(Admin admin) {
         try (Connection connection = DbUtil.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(CREATE_ADMIN, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(CREATE_ADMIN, PreparedStatement.RETURN_GENERATED_KEYS);
             statement.setString(1, admin.getFirstName());
             statement.setString(2, admin.getLastName());
-            statement.setString(1, admin.getEmail());
-            statement.setString(1, hashPassword(admin.getPassword()));
-            ResultSet resultSet = statement.getGeneratedKeys();
+            statement.setString(3, admin.getEmail());
+            statement.setString(4, hashPassword(admin.getPassword()));
+            statement.setInt(5, admin.getSuperAdmin());
 
-            if (resultSet.next()) {
-                admin.setId(resultSet.getInt(1));
-                log.info("Admin {} created", admin);
+            int result = statement.executeUpdate();
+
+            if (result != 1) {
+                throw new RuntimeException("Execute update returned " + result);
             }
 
-        } catch (SQLException e) {
-            log.error(e.getStackTrace());
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.first()) {
+                    admin.setId(generatedKeys.getInt(1));
+                    return admin;
+                } else {
+                    throw new RuntimeException("Generated key was not found");
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
-        return admin;
+        return null;
     }
 
-    public int delete(Integer id) {
+    public boolean delete(Integer adminId) {
+        boolean deleted;
         try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_ADMIN);
-            statement.setInt(1, id);
-            int isDeleted = statement.executeUpdate();
+            statement.setInt(1, adminId);
+            statement.executeUpdate();
 
-            if (isDeleted == 1) {
-                log.info("User with id {} deleted", id);
-            } else {
-                log.warn("User with id {} NOT deleted", id);
+            deleted = statement.execute();
+            if (!deleted) {
+                log.error("Admin not deleted");
             }
-            return isDeleted;
+            return deleted;
         } catch (SQLException e) {
-            log.error(e.getStackTrace());
-            return 0;
+            log.error(e.getMessage());
+            return false;
         }
     }
+
+
 
     public int update(Admin admin) {
         try (Connection conn = getConnection()) {
             PreparedStatement statement = conn.prepareStatement(UPDATE_ADMIN);
             statement.setString(1, admin.getFirstName());
             statement.setString(2, admin.getLastName());
-            statement.setString(3,hashPassword(admin.getPassword()));
-            statement.setInt(4,admin.getId());
+            statement.setString(3, admin.getEmail());
+            statement.setString(4, hashPassword(admin.getPassword()));
+            statement.setInt(5, admin.getId());
+
             int isUpdated = statement.executeUpdate();
 
             if (isUpdated == 1) {
@@ -139,7 +151,7 @@ public class AdminDao {
             return isUpdated;
 
         } catch (SQLException e) {
-            log.error(e.getStackTrace());
+            log.error(e.getMessage());
             return 0;
         }
     }
