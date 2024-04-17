@@ -178,6 +178,28 @@ public class AdminDao {
         }
         return adminToReturn;
     }
+
+    public boolean authentication(String email, String password) {
+        boolean isLogged = false;
+        AdminDao adminDao = new AdminDao();
+
+        try {
+            Admin admin = adminDao.getAdminByEmail(email);
+            if (admin.getPassword() != null) {
+                if (BCrypt.checkpw(password, admin.getPassword())) {
+                    log.error("User with email {} authenticated", email);
+                    isLogged = true;
+                } else {
+                    log.error("Invalid password for email {}", email);
+                }
+            } else {
+                log.error("User with email {} does not exist", email);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return isLogged;
+    }
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
