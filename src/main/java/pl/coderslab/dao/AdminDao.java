@@ -16,7 +16,6 @@ import static pl.coderslab.utils.DbUtil.getConnection;
 
 public class AdminDao {
     private static final Logger log = LogManager.getLogger(AdminDao.class);
-
     private static final String FIND_ALL_ADMINS = "SELECT * FROM admins;";
     private static final String GET_ADMIN_BY_ID = "SELECT * FROM admins WHERE id = ?;";
     private static final String DELETE_ADMIN = "DELETE FROM admins WHERE id = ?;";
@@ -111,25 +110,25 @@ public class AdminDao {
         return null;
     }
 
-    public boolean delete(Integer adminId) {
-        boolean deleted;
+    public int delete(Integer adminId) {
         try (Connection connection = DbUtil.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_ADMIN);
             statement.setInt(1, adminId);
-            statement.executeUpdate();
 
-            deleted = statement.execute();
-            if (!deleted) {
-                log.error("Admin not deleted");
+            int isDeleted = statement.executeUpdate();
+
+            if (isDeleted == 1) {
+                log.info("User with id {} successfully deleted", adminId);
+
+            } else {
+                log.info("User with id {} NOT deleted", adminId);
             }
-            return deleted;
+            return isDeleted;
         } catch (SQLException e) {
             log.error(e.getMessage());
-            return false;
+            return 0;
         }
     }
-
-
 
     public int update(Admin admin) {
         try (Connection conn = getConnection()) {
