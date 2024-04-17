@@ -1,9 +1,10 @@
 package pl.coderslab.web;
 
 import lombok.extern.java.Log;
+import pl.coderslab.dao.AdminDao;
 import pl.coderslab.dao.BookDao;
+import pl.coderslab.model.Admin;
 import pl.coderslab.model.Book;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,11 +19,12 @@ import java.util.List;
 @WebServlet("")
 @Log
 public class HomeServlet extends HttpServlet {
-
+  
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
     log.info("Home servlet is working.");
   }
+
 }
