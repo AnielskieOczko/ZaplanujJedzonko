@@ -7,11 +7,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pl.coderslab.exception.NotFoundException;
 import pl.coderslab.model.Recipe;
 import pl.coderslab.utils.DbUtil;
 
 public class RecipeDao {
 
+  public static Logger logger = LogManager.getLogger(RecipeDao.class);
   private static final String CREATE_RECIPE_QUERY = "INSERT INTO recipe (name, ingredients, description, created, updated, preparation_time, preparation, admin_id) VALUES (?,?,?, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?,?);";
   private static final String DELETE_RECIPE_QUERY = "DELETE FROM recipe where id = ?;";
   private static final String FIND_ALL_RECIPE_QUERY = "SELECT * from recipe;";
@@ -21,8 +25,8 @@ public class RecipeDao {
   /**
    * Create recipe
    *
-   * @param recipe
-   * @return
+   * @param recipe: Recipe instance to be added to database
+   * @return Recipe instance with generated id once record created successfully
    */
 
   public Recipe create(Recipe recipe) {
@@ -36,18 +40,25 @@ public class RecipeDao {
       statement.setInt(4, recipe.getPreparationTime());
       statement.setString(5, recipe.getPreparation());
       statement.setInt(6, recipe.getAdminId());
-      statement.executeUpdate();
+      int result = statement.executeUpdate();
 
-      ResultSet resultSet = statement.getGeneratedKeys();
-
-      if (resultSet.next()) {
-        recipe.setId(resultSet.getInt(1));
+      if (result != 1) {
+        throw new RuntimeException("Execute update returned " + result);
       }
-      return recipe;
-    } catch (SQLException e) {
+
+      try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+        if (generatedKeys.first()) {
+          recipe.setId(generatedKeys.getInt(1));
+          return recipe;
+        } else {
+          throw new RuntimeException("Generated key was not found");
+        }
+      }
+
+    } catch (Exception e) {
       e.printStackTrace();
-      return null;
     }
+    return null;
   }
 
   ;
@@ -55,8 +66,8 @@ public class RecipeDao {
   /**
    * Get recipe by id
    *
-   * @param id
-   * @return
+   * @param id: of the recipe record to be returned by sql query
+   * @return Recipe instance once any record retrieved from database
    */
 
   public Recipe read(int id) {
@@ -74,9 +85,9 @@ public class RecipeDao {
         recipe.setDescription(resultSet.getString("description"));
         recipe.setCreated(resultSet.getTimestamp("created").toLocalDateTime());
         recipe.setUpdated(resultSet.getTimestamp("updated").toLocalDateTime());
-        recipe.setPreparationTime(resultSet.getInt("preparationTime"));
+        recipe.setPreparationTime(resultSet.getInt("preparation_time"));
         recipe.setPreparation(resultSet.getString("preparation"));
-        recipe.setAdminId(resultSet.getInt("adminId"));
+        recipe.setAdminId(resultSet.getInt("admin_id"));
         return recipe;
       }
     } catch (Exception e) {
@@ -89,9 +100,9 @@ public class RecipeDao {
 
 
   /**
-   * Update recipe
+   * Update recipe with data from recipe object once record with given id exists in database
    *
-   * @param recipe
+   * @param recipe: Recipe instance with id which is used to update particular record in database
    */
   public void update(Recipe recipe) {
     try (Connection conn = DbUtil.getConnection()) {
@@ -111,17 +122,20 @@ public class RecipeDao {
 
 
   /**
-   * Remove book by id
+   * Remove recipe by id
    *
-   * @param id
+   * @param id: id of the plan to be removed
    */
 
   public void delete(int id) {
     try (Connection connection = DbUtil.getConnection()) {
       PreparedStatement statement = connection.prepareStatement(DELETE_RECIPE_QUERY);
       statement.setInt(1, id);
-      statement.executeUpdate();
-    } catch (SQLException e) {
+      int rowsAffected = statement.executeUpdate();
+      if (rowsAffected == 0) {
+        throw new NotFoundException("Plan record not found");
+      }
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -130,7 +144,7 @@ public class RecipeDao {
   /**
    * Return all recipes
    *
-   * @return
+   * @return All recipes stored in database
    */
   public List<Recipe> findAll() {
     try (Connection connection = DbUtil.getConnection()) {
