@@ -1,6 +1,7 @@
 package pl.coderslab.dao;
 
 import org.mindrot.jbcrypt.BCrypt;
+import pl.coderslab.exception.UnauthorizedAdminException;
 import pl.coderslab.model.Admin;
 import pl.coderslab.utils.DbUtil;
 import org.apache.logging.log4j.LogManager;
@@ -179,26 +180,31 @@ public class AdminDao {
         return adminToReturn;
     }
 
-    public boolean authentication(String email, String password) {
-        boolean isLogged = false;
+    public Admin authentication(String email, String password) throws UnauthorizedAdminException {
+        Admin admin;
         AdminDao adminDao = new AdminDao();
 
         try {
-            Admin admin = adminDao.getAdminByEmail(email);
-            if (admin.getPassword() != null) {
-                if (BCrypt.checkpw(password, admin.getPassword())) {
-                    log.error("User with email {} authenticated", email);
-                    isLogged = true;
+            admin = adminDao.getAdminByEmail(email);
+            try {
+                if (admin.getPassword() != null) {
+                    if (BCrypt.checkpw(password, admin.getPassword())) {
+                        log.info("User with email {} authenticated", email);
+                        return admin;
+                    } else {
+                        throw new UnauthorizedAdminException("Login attempt failed - invalid password");
+                    }
                 } else {
-                    log.error("Invalid password for email {}", email);
+                    throw new UnauthorizedAdminException("Login attempt failed - admin does not exists");
                 }
-            } else {
-                log.error("User with email {} does not exist", email);
+            } catch (UnauthorizedAdminException e) {
+                log.error(e.getMessage());
+                return null;
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+            return null;
         }
-        return isLogged;
     }
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
