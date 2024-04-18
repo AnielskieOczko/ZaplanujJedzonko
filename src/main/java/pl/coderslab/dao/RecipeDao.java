@@ -16,11 +16,11 @@ import pl.coderslab.utils.DbUtil;
 public class RecipeDao {
 
   public static Logger logger = LogManager.getLogger(RecipeDao.class);
-  private static final String CREATE_RECIPE_QUERY = "INSERT INTO recipe (name, ingredients, description, created, updated, preparation_time, preparation, admin_id) VALUES (?,?,?, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,?,?,?);";
+  private static final String CREATE_RECIPE_QUERY = "INSERT INTO recipe (name, ingredients, description, created, updated, preparation_time, preparation, admin_id) VALUES (?,?,?, UTC_TIMESTAMP,UTC_TIMESTAMP,?,?,?);";
   private static final String DELETE_RECIPE_QUERY = "DELETE FROM recipe where id = ?;";
   private static final String FIND_ALL_RECIPE_QUERY = "SELECT * from recipe;";
   private static final String READ_RECIPE_QUERY = "SELECT * from recipe where id = ?;";
-  private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = CURRENT_TIMESTAMP, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
+  private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = UTC_TIMESTAMP, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
 
   /**
    * Create recipe
