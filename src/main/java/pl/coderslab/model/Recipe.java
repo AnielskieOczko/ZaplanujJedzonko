@@ -1,5 +1,6 @@
 package pl.coderslab.model;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +20,9 @@ public class Recipe {
 
   private String description;
 
-  private LocalDateTime created;
+  private Instant created = Instant.now();
 
-  private LocalDateTime updated;
+  private Instant updated = Instant.now();
 
   private int preparationTime;
 
@@ -32,14 +33,11 @@ public class Recipe {
   public Recipe() {
   }
 
-  public Recipe(int id, String name, String ingredients, String description, LocalDateTime created,
-      LocalDateTime updated, int preparationTime, String preparation, int adminId) {
-    this.id = id;
+  public Recipe( String name, String ingredients, String description, int preparationTime, String preparation, int adminId) {
+
     this.name = name;
     this.ingredients = ingredients;
     this.description = description;
-    this.created = created;
-    this.updated = updated;
     this.preparationTime = preparationTime;
     this.preparation = preparation;
     this.adminId = adminId;

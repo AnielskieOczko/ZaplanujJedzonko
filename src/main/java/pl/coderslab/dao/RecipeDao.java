@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -16,11 +18,11 @@ import pl.coderslab.utils.DbUtil;
 public class RecipeDao {
 
   public static Logger logger = LogManager.getLogger(RecipeDao.class);
-  private static final String CREATE_RECIPE_QUERY = "INSERT INTO recipe (name, ingredients, description, created, updated, preparation_time, preparation, admin_id) VALUES (?,?,?, UTC_TIMESTAMP,UTC_TIMESTAMP,?,?,?);";
+  private static final String CREATE_RECIPE_QUERY = "INSERT INTO recipe (name, ingredients, description, created, updated, preparation_time, preparation, admin_id) VALUES (?,?,?, ?,?,?,?,?);";
   private static final String DELETE_RECIPE_QUERY = "DELETE FROM recipe where id = ?;";
   private static final String FIND_ALL_RECIPE_QUERY = "SELECT * from recipe;";
   private static final String READ_RECIPE_QUERY = "SELECT * from recipe where id = ?;";
-  private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = UTC_TIMESTAMP, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
+  private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = ?, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
 
   /**
    * Create recipe
@@ -37,9 +39,11 @@ public class RecipeDao {
       statement.setString(1, recipe.getName());
       statement.setString(2, recipe.getIngredients());
       statement.setString(3, recipe.getDescription());
-      statement.setInt(4, recipe.getPreparationTime());
-      statement.setString(5, recipe.getPreparation());
-      statement.setInt(6, recipe.getAdminId());
+      statement.setTimestamp(4, Timestamp.from(recipe.getCreated()));
+      statement.setTimestamp(5, Timestamp.from(recipe.getUpdated()));
+      statement.setInt(6, recipe.getPreparationTime());
+      statement.setString(7, recipe.getPreparation());
+      statement.setInt(8, recipe.getAdminId());
       int result = statement.executeUpdate();
 
       if (result != 1) {
@@ -83,8 +87,8 @@ public class RecipeDao {
         recipe.setName(resultSet.getString("name"));
         recipe.setIngredients(resultSet.getString("ingredients"));
         recipe.setDescription(resultSet.getString("description"));
-        recipe.setCreated(resultSet.getTimestamp("created").toLocalDateTime());
-        recipe.setUpdated(resultSet.getTimestamp("updated").toLocalDateTime());
+        recipe.setCreated(resultSet.getTimestamp("created").toInstant());
+        recipe.setUpdated(resultSet.getTimestamp("updated").toInstant());
         recipe.setPreparationTime(resultSet.getInt("preparation_time"));
         recipe.setPreparation(resultSet.getString("preparation"));
         recipe.setAdminId(resultSet.getInt("admin_id"));
@@ -107,13 +111,15 @@ public class RecipeDao {
   public void update(Recipe recipe) {
     try (Connection conn = DbUtil.getConnection()) {
       PreparedStatement statement = conn.prepareStatement(UPDATE_RECIPE_QUERY);
+      recipe.setUpdated(Instant.now());
       statement.setString(1, recipe.getName());
       statement.setString(2, recipe.getIngredients());
       statement.setString(3, recipe.getDescription());
-      statement.setInt(4, recipe.getPreparationTime());
-      statement.setString(5, recipe.getPreparation());
-      statement.setInt(6, recipe.getAdminId());
-      statement.setInt(7, recipe.getId());
+      statement.setTimestamp(4, Timestamp.from(recipe.getUpdated()));
+      statement.setInt(5, recipe.getPreparationTime());
+      statement.setString(6, recipe.getPreparation());
+      statement.setInt(7, recipe.getAdminId());
+      statement.setInt(8, recipe.getId());
       statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -159,8 +165,8 @@ public class RecipeDao {
         recipe.setName(resultSet.getString("name"));
         recipe.setIngredients(resultSet.getString("ingredients"));
         recipe.setDescription(resultSet.getString("description"));
-        recipe.setCreated(resultSet.getTimestamp("created").toLocalDateTime());
-        recipe.setUpdated(resultSet.getTimestamp("updated").toLocalDateTime());
+        recipe.setCreated(resultSet.getTimestamp("created").toInstant());
+        recipe.setUpdated(resultSet.getTimestamp("updated").toInstant());
         recipe.setAdminId(resultSet.getInt("admin_id"));
         recipe.setPreparationTime(resultSet.getInt("preparation_time"));
         recipe.setPreparation(resultSet.getString("preparation"));
