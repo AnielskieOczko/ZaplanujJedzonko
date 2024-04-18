@@ -1,6 +1,7 @@
 package pl.coderslab.dao;
 
 import org.mindrot.jbcrypt.BCrypt;
+import pl.coderslab.exception.UnauthorizedAdminException;
 import pl.coderslab.model.Admin;
 import pl.coderslab.utils.DbUtil;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,7 @@ public class AdminDao {
                 password = ?
             WHERE id = ?;
             """;
+    private static final String GET_ADMIN_BY_EMAIL = "SELECT * FROM admins WHERE email = ?";
 
     public List<Admin> findAll() {
         List<Admin> admins = new ArrayList<>();
@@ -155,6 +157,55 @@ public class AdminDao {
         }
     }
 
+    public Admin getAdminByEmail(String email) {
+        Admin adminToReturn = new Admin();
+        try (Connection connection = DbUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_ADMIN_BY_EMAIL)
+        ) {
+            statement.setString(1, email);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    adminToReturn.setId(resultSet.getInt("id"));
+                    adminToReturn.setFirstName(resultSet.getString("first_name"));
+                    adminToReturn.setLastName(resultSet.getString("last_name"));
+                    adminToReturn.setEmail(resultSet.getString("email"));
+                    adminToReturn.setPassword(resultSet.getString("password"));
+                    adminToReturn.setSuperAdmin(resultSet.getInt("superAdmin"));
+                    adminToReturn.setEnable(resultSet.getInt("enable"));
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return adminToReturn;
+    }
+
+    public Admin authentication(String email, String password) throws UnauthorizedAdminException {
+        Admin admin;
+        AdminDao adminDao = new AdminDao();
+
+        try {
+            admin = adminDao.getAdminByEmail(email);
+            try {
+                if (admin.getPassword() != null) {
+                    if (BCrypt.checkpw(password, admin.getPassword())) {
+                        log.info("User with email {} authenticated", email);
+                        return admin;
+                    } else {
+                        throw new UnauthorizedAdminException("Login attempt failed - invalid password");
+                    }
+                } else {
+                    throw new UnauthorizedAdminException("Login attempt failed - admin does not exists");
+                }
+            } catch (UnauthorizedAdminException e) {
+                log.error(e.getMessage());
+                return null;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
