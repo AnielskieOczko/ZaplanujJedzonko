@@ -184,28 +184,21 @@ public class AdminDao {
         Admin admin;
         AdminDao adminDao = new AdminDao();
 
-        try {
-            admin = adminDao.getAdminByEmail(email);
-            try {
-                if (admin.getPassword() != null) {
-                    if (BCrypt.checkpw(password, admin.getPassword())) {
-                        log.info("User with email {} authenticated", email);
-                        return admin;
-                    } else {
-                        throw new UnauthorizedAdminException("Login attempt failed - invalid password");
-                    }
-                } else {
-                    throw new UnauthorizedAdminException("Login attempt failed - admin does not exists");
-                }
-            } catch (UnauthorizedAdminException e) {
-                log.error(e.getMessage());
-                return null;
+        admin = adminDao.getAdminByEmail(email);
+
+        if (admin.getPassword() != null) {
+            if (BCrypt.checkpw(password, admin.getPassword())) {
+                log.info("User with email {} authenticated", email);
+                return admin;
+            } else {
+                throw new UnauthorizedAdminException("Login attempt failed - invalid password");
             }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
+        } else {
+            throw new UnauthorizedAdminException("Login attempt failed - admin does not exists");
         }
+
     }
+
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
