@@ -6,10 +6,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import lombok.extern.java.Log;
 import pl.coderslab.dao.AdminDao;
 import pl.coderslab.exception.UnauthorizedAdminException;
 import pl.coderslab.model.Admin;
 
+@Log
 @WebServlet("/login")
 public class Login extends HttpServlet {
 
@@ -29,10 +32,17 @@ public class Login extends HttpServlet {
     String errorMessage = null;
     try {
       Admin authenticatedAdmin = adminDao.authentication(email, password);
-      if (authenticatedAdmin != null) {
+        HttpSession loginSession = req.getSession();
+        loginSession.setAttribute("isLoggedIn", true);
+        loginSession.setAttribute("adminId", authenticatedAdmin.getId());
+
+        log.info("Session Id: " + loginSession.getId());
+        log.info("Login: " + loginSession.getAttribute("isLoggedIn"));
+        log.info("UserId: " + loginSession.getAttribute("adminId"));
+
         resp.sendRedirect("/");
         return;
-      }
+
     } catch (UnauthorizedAdminException e) {
       errorMessage = "Wystąpił błąd podczas uwierzytelniania. Spróbuj ponownie później.";
     }
