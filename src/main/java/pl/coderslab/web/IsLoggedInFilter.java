@@ -13,9 +13,7 @@ import java.io.IOException;
 @WebFilter("/app/*")
 public class IsLoggedInFilter implements Filter {
     public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
-
-
-
+    
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -31,8 +29,6 @@ public class IsLoggedInFilter implements Filter {
             logger.info("Admin is not logged in");
             response.sendRedirect("/login");
         }
-
-
     }
 
     @Override
