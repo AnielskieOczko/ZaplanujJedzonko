@@ -1,5 +1,6 @@
 package pl.coderslab.web;
 
+import pl.coderslab.dao.AdminDao;
 import pl.coderslab.dao.PlanDao;
 import pl.coderslab.dao.RecipeDao;
 import pl.coderslab.model.LastAddedPlanDto;
@@ -18,6 +19,7 @@ public class Dashboard extends HttpServlet {
 
     RecipeDao recipeDao = new RecipeDao();
     PlanDao planDao = new PlanDao();
+    AdminDao adminDao = new AdminDao();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,11 +27,12 @@ public class Dashboard extends HttpServlet {
 
         HttpSession session = req.getSession();
         // for testing - simulate logged admin (TO BE REMOVED)
-//        session.setAttribute("adminId", 1);
+        session.setAttribute("adminId", 1);
 
         try {
             int adminId = (int) session.getAttribute("adminId");
 
+            req.setAttribute("adminName", adminDao.read(adminId).getFirstName());
             req.setAttribute("recipeCount", recipeDao.countRecipesForCurrentUser(req));
             req.setAttribute("planCount", planDao.getPlanCountByAdminId(adminId));
             req.setAttribute("mealList", planDao.getLastAddedPlan(adminId));
