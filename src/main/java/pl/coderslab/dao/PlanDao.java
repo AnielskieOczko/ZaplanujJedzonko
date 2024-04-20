@@ -3,6 +3,7 @@ package pl.coderslab.dao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.coderslab.exception.NotFoundException;
+import pl.coderslab.model.LastAddedPlanDto;
 import pl.coderslab.model.Plan;
 import pl.coderslab.utils.DbUtil;
 
@@ -22,6 +23,19 @@ public class PlanDao {
     public static final String FIND_ALL_PLANS_QUERY = "SELECT * FROM plan;";
     public static final String UPDATE_PLAN_QUERY = "UPDATE plan SET name = ?, description = ? WHERE id = ?;";
     public static final String DELETE_PLAN_QUERY = "DELETE FROM plan WHERE id = ?;";
+    public static final String LAST_ADDED_PLAN_DETAILS_QUERY = """
+            SELECT recipe_plan.meal_name as meal_name,
+                   recipe.name           as recipe_name,
+                   recipe.id,
+                   plan.name             as plan_name,
+                   day_name.name
+            FROM recipe_plan
+                     JOIN recipe ON recipe_plan.recipe_id = recipe.id
+                     JOIN plan ON recipe_plan.plan_id = plan.id
+                     JOIN day_name ON recipe_plan.day_name_id = day_name.id
+            WHERE plan.id = (SELECT MAX(plan.id) FROM plan WHERE admin_id = ?)
+            order by day_name.display_order, recipe_plan.display_order;
+                        """;
 
 
     /**
@@ -144,5 +158,28 @@ public class PlanDao {
         }
     }
 
-
+    /**
+     * Get list of LastAddedPlanDao objects for the last added plan for the admin with `adminId`.
+     * @param adminId: int value which is primary key in admins table in scrumlab database.
+     * @return List of data transfer objects whose fields wille be used to populate view.
+     */
+    public List<LastAddedPlanDto> getLastAddedPlan(int adminId) {
+        List<LastAddedPlanDto> lastAddedPlanDtoList = new ArrayList<>();
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(LAST_ADDED_PLAN_DETAILS_QUERY)) {
+            preparedStatement.setInt(1, adminId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                LastAddedPlanDto lastAddedPlanDto = new LastAddedPlanDto();;
+                lastAddedPlanDto.setPlanName(resultSet.getString("plan_name"));
+                lastAddedPlanDto.setDayName(resultSet.getString("day_name.name"));
+                lastAddedPlanDto.setMeal_name(resultSet.getString("meal_name"));
+                lastAddedPlanDto.setRecipeId(resultSet.getInt("recipe.id"));
+                lastAddedPlanDto.setRecipeName(resultSet.getString("recipe_name"));
+                lastAddedPlanDtoList.add(lastAddedPlanDto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lastAddedPlanDtoList;
+    }
 }
