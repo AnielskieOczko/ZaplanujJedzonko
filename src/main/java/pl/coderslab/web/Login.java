@@ -32,16 +32,14 @@ public class Login extends HttpServlet {
     String errorMessage = null;
     try {
       Admin authenticatedAdmin = adminDao.authentication(email, password);
-        HttpSession loginSession = req.getSession();
-        loginSession.setAttribute("isLoggedIn", true);
-        loginSession.setAttribute("adminId", authenticatedAdmin.getId());
+      HttpSession loginSession = req.getSession();
+      loginSession.setAttribute("adminId", authenticatedAdmin.getId());
 
-        log.info("Session Id: " + loginSession.getId());
-        log.info("Login: " + loginSession.getAttribute("isLoggedIn"));
-        log.info("UserId: " + loginSession.getAttribute("adminId"));
+      log.info("Session Id: " + loginSession.getId());
+      log.info("UserId: " + loginSession.getAttribute("adminId"));
 
-        resp.sendRedirect("/");
-        return;
+      resp.sendRedirect("/");
+      return;
 
     } catch (UnauthorizedAdminException e) {
       errorMessage = "Wystąpił błąd podczas uwierzytelniania. Spróbuj ponownie później.";
