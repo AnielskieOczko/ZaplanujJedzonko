@@ -42,11 +42,14 @@ public class Login extends HttpServlet {
       return;
 
     } catch (UnauthorizedAdminException e) {
-      errorMessage = "Wystąpił błąd podczas uwierzytelniania. Spróbuj ponownie później.";
+      errorMessage = "Nieprawidłowy email lub hasło";
+    } catch (Exception e) {
+      errorMessage = "Wystąpił błąd podczas przetwarzania żądania";
+      log.info("Wystąpił nieoczekiwany wyjątek: " + e.getMessage());
     }
-    errorMessage = "Nieprawidłowy email lub hasło";
 
     req.setAttribute("error", errorMessage);
     req.getRequestDispatcher("/login.jsp").forward(req, resp);
   }
+
 }
