@@ -9,6 +9,8 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.coderslab.exception.NotFoundException;
@@ -23,6 +25,8 @@ public class RecipeDao {
   private static final String FIND_ALL_RECIPE_QUERY = "SELECT * from recipe;";
   private static final String READ_RECIPE_QUERY = "SELECT * from recipe where id = ?;";
   private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = ?, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
+
+  private static final String COUNT_RECIPE_QUERY = "SELECT COUNT(*) AS recipe_count FROM recipe WHERE admin_id = ?";
 
   /**
    * Create recipe
@@ -179,6 +183,39 @@ public class RecipeDao {
     }
   }
 
+  /**
+   * Return Recipe count
+   *
+   * @return Numbers of recipes by AdminId
+   */
+
+  public int countRecipesByAdminId(int adminId) {
+    int count = 0;
+    try (Connection connection = DbUtil.getConnection()) {
+      try (PreparedStatement statement = connection.prepareStatement(COUNT_RECIPE_QUERY)) {
+        statement.setInt(1, adminId);
+        try (ResultSet resultSet = statement.executeQuery()) {
+          if (resultSet.next()) {
+            count = resultSet.getInt("recipe_count");
+          }
+        }
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return count;
+  }
+
+  /**
+   * Return Logged admin recipe count
+   *
+   * @return Numbers of recipes logged user by AdminId
+   */
+  public int countRecipesForCurrentUser(HttpServletRequest request) {
+    HttpSession loginSession = request.getSession();
+    int adminId = (int) loginSession.getAttribute("adminId");
+    return countRecipesByAdminId(adminId);
+  }
 
 }
 
