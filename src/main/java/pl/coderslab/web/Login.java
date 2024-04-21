@@ -29,9 +29,10 @@ public class Login extends HttpServlet {
 
     String email = req.getParameter("email");
     String password = req.getParameter("password");
-    String errorMessage = null;
+
     try {
       Admin authenticatedAdmin = adminDao.authentication(email, password);
+
       HttpSession loginSession = req.getSession();
       loginSession.setAttribute("adminId", authenticatedAdmin.getId());
 
@@ -39,17 +40,14 @@ public class Login extends HttpServlet {
       log.info("UserId: " + loginSession.getAttribute("adminId"));
 
       resp.sendRedirect("/");
-      return;
 
     } catch (UnauthorizedAdminException e) {
-      errorMessage = "Nieprawidłowy email lub hasło";
-    } catch (Exception e) {
-      errorMessage = "Wystąpił błąd podczas przetwarzania żądania";
-      log.info("Wystąpił nieoczekiwany wyjątek: " + e.getMessage());
+      e.printStackTrace();
+      String errorMessage = "Nieprawidłowy email lub hasło";
+      req.setAttribute("error", errorMessage);
+      req.getRequestDispatcher("/login.jsp").forward(req, resp);
     }
-
-    req.setAttribute("error", errorMessage);
-    req.getRequestDispatcher("/login.jsp").forward(req, resp);
   }
 
 }
+
