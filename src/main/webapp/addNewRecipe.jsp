@@ -73,7 +73,7 @@
 
         <div class="m-4 p-3 width-medium text-color-darker">
             <div class="dashboard-content border-dashed p-3 m-4 view-height">
-                <form method="POST" action=${pageContext.request.contextPath}/add>
+                <form method="POST" action=${pageContext.request.contextPath}/app/recipe/add>
                     <div class="mt-4 ml-4 mr-4">
                         <div class="row border-bottom border-3">
                             <div class="col"><h3 class="color-header text-uppercase">Nowy przepis</h3></div>
