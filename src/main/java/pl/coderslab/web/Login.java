@@ -1,15 +1,17 @@
-package pl.coderslab.model;
+package pl.coderslab.web;
 
-import java.io.IOException;
+import lombok.extern.java.Log;
+import pl.coderslab.dao.AdminDao;
+import pl.coderslab.exception.UnauthorizedAdminException;
+import pl.coderslab.model.Admin;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import lombok.extern.java.Log;
-import pl.coderslab.dao.AdminDao;
-import pl.coderslab.exception.UnauthorizedAdminException;
+import java.io.IOException;
 
 
 @Log
@@ -35,6 +37,7 @@ public class Login extends HttpServlet {
 
       HttpSession loginSession = req.getSession();
       loginSession.setAttribute("adminId", authenticatedAdmin.getId());
+      loginSession.setAttribute("adminName", authenticatedAdmin.getFirstName());
 
       log.info("Session Id: " + loginSession.getId());
       log.info("UserId: " + loginSession.getAttribute("adminId"));

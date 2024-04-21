@@ -1,17 +1,13 @@
 package pl.coderslab.web;
 
 import lombok.extern.java.Log;
-import pl.coderslab.dao.AdminDao;
-import pl.coderslab.dao.BookDao;
-import pl.coderslab.model.Admin;
-import pl.coderslab.model.Book;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Do not change servlet address !!!
