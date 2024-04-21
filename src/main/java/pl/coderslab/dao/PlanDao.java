@@ -37,7 +37,7 @@ public class PlanDao {
             order by day_name.display_order, recipe_plan.display_order;
                         """;
 
-
+    private static final String COUNT_PLAN_QUERY = "SELECT COUNT(*) AS plan_count FROM plan WHERE admin_id = ?";
     /**
      * Create plan
      *
@@ -181,5 +181,22 @@ public class PlanDao {
             e.printStackTrace();
         }
         return lastAddedPlanDtoList;
+    }
+
+    public int getPlanCountByAdminId(int adminId) {
+        int count = 0;
+        try (Connection connection = DbUtil.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(COUNT_PLAN_QUERY)) {
+                statement.setInt(1, adminId);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        count = resultSet.getInt("plan_count");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return count;
     }
 }
