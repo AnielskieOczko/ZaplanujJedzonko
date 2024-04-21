@@ -73,9 +73,7 @@
 
         <div class="m-4 p-3 width-medium text-color-darker">
             <div class="dashboard-content border-dashed p-3 m-4 view-height">
-                <!-- fix action, method -->
-                <!-- add name attribute for all inputs -->
-                <form action="POST", target=${pageContext.request.contextPath}/recipe/add}>
+                <form method="POST" action=${pageContext.request.contextPath}/add>
                     <div class="mt-4 ml-4 mr-4">
                         <div class="row border-bottom border-3">
                             <div class="col"><h3 class="color-header text-uppercase">Nowy przepis</h3></div>
@@ -91,17 +89,17 @@
                                 <th scope="row" class="col-2">Nazwa Przepisu</th>
                                 <td class="col-7">
 
-                                    <input id="recipe-name" name="recipe-name" class="w-100 p-1" value="">
+                                    <input id="recipe-name" name="recipe-name" class="w-100 p-1" value="" maxlength="255" required>
                                 </td>
                             </tr>
                             <tr class="d-flex">
                                 <th scope="row" class="col-2">Opis przepisu</th>
-                                <td class="col-7"><textarea class="w-100 p-1" rows="5"></textarea></td>
+                                <td class="col-7"><textarea id="recipe-desc" name="recipe-desc" class="w-100 p-1" rows="5" required></textarea></td>
                             </tr>
                             <tr class="d-flex">
                                 <th scope="row" class="col-2">Przygotowanie (minuty)</th>
                                 <td class="col-3">
-                                    <input id="prep-time" name="prep-time" class="p-1" type="number" value="">
+                                    <input id="recipe-prep-time" name="recipe-prep-time" class="p-1" type="number" value="" min="1" required>
                                 </td>
                             </tr>
                             </tbody>
@@ -115,12 +113,12 @@
                         </div>
                         <div class="row d-flex">
                             <div class="col-5 p-4">
-                                <textarea id="prep-desc" name="prep-desc" class="w-100 p-1" rows="10"></textarea>
+                                <textarea id="recipe-prep-desc" name="recipe-prep-desc" class="w-100 p-1" rows="10" required></textarea>
                             </div>
                             <div class="col-2"></div>
 
                             <div class="col-5 p-4">
-                                <textarea id="ingredients" name="ingredients" class="w-100 p-1" rows="10"></textarea>
+                                <textarea id="recipe-ingredients" name="recipe-ingredients" class="w-100 p-1" rows="10" required></textarea>
                             </div>
                         </div>
                     </div>
