@@ -22,6 +22,9 @@
                         <th scope="col" class="col-2 center">AKCJE</th>
                     </tr>
                     </thead>
+                    <c:if test="${userRecipes.length() == 0}">
+                        <p>Nie masz jeszcze dodanych żadnych przepisóœ</p>
+                    </c:if>
                     <tbody class="text-color-lighter">
                     <c:forEach var="recipe" items="${userRecipes}">
                         <tr class="d-flex">
