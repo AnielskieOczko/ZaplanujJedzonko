@@ -205,17 +205,5 @@ public class RecipeDao {
     }
     return count;
   }
-
-  /**
-   * Return Logged admin recipe count
-   *
-   * @return Numbers of recipes logged user by AdminId
-   */
-  public int countRecipesForCurrentUser(HttpServletRequest request) {
-    HttpSession loginSession = request.getSession();
-    int adminId = (int) loginSession.getAttribute("adminId");
-    return countRecipesByAdminId(adminId);
-  }
-
 }
 
