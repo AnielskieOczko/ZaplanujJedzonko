@@ -21,10 +21,7 @@ public class AddNewRecipe extends HttpServlet {
     public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        // TODO: remove adminId setAtt
         HttpSession session = req.getSession();
-        session.setAttribute("adminId", 1);
         int adminId = (int) session.getAttribute("adminId");
 
         req.setAttribute("adminName", adminDao.read(adminId).getFirstName());
@@ -48,7 +45,7 @@ public class AddNewRecipe extends HttpServlet {
             Recipe newRecipe = recipeDao.create(recipe);
             System.out.println(newRecipe);
             // TODO: change redirect to /app/recipe
-            resp.sendRedirect("/dashboard");
+            resp.sendRedirect("/app/dashboard");
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/dashboard")
+@WebServlet("/app/dashboard")
 public class Dashboard extends HttpServlet {
 
     RecipeDao recipeDao = new RecipeDao();
@@ -27,7 +27,6 @@ public class Dashboard extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
         HttpSession session = req.getSession();
-        session.setAttribute("adminId", 1);
 
         try {
             int adminId = (int) session.getAttribute("adminId");
