@@ -39,7 +39,7 @@ public class Login extends HttpServlet {
       log.info("Session Id: " + loginSession.getId());
       log.info("UserId: " + loginSession.getAttribute("adminId"));
 
-      resp.sendRedirect("/");
+      resp.sendRedirect("/app/dashboard");
 
     } catch (UnauthorizedAdminException e) {
       e.printStackTrace();
