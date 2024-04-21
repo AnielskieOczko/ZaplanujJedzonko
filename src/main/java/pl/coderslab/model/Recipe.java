@@ -1,10 +1,13 @@
 package pl.coderslab.model;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Setter
 @Getter
@@ -33,7 +36,7 @@ public class Recipe {
   public Recipe() {
   }
 
-  public Recipe( String name, String ingredients, String description, int preparationTime, String preparation, int adminId) {
+  public Recipe(String name, String ingredients, String description, int preparationTime, String preparation, int adminId) {
 
     this.name = name;
     this.ingredients = ingredients;
@@ -42,4 +45,18 @@ public class Recipe {
     this.preparation = preparation;
     this.adminId = adminId;
   }
+
+  public List<String> getIngredientList() {
+    String noWhiteSpaceIngredients = ingredients.replaceAll("\\s", ",");
+
+//    By this process we just split on ",", and get rid of all commas
+    List<String> ingredientsList = new ArrayList<>(List.of(noWhiteSpaceIngredients.split(",")));
+
+//    filtrating process - using method reference, removing every element that is empty from the list
+    ingredientsList.removeIf(String::isEmpty);
+
+    return ingredientsList;
+  }
+
+
 }
