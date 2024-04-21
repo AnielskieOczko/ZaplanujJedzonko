@@ -1,5 +1,7 @@
 package pl.coderslab.web;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.coderslab.dao.AdminDao;
 import pl.coderslab.dao.PlanDao;
 import pl.coderslab.dao.RecipeDao;
@@ -20,7 +22,7 @@ public class Dashboard extends HttpServlet {
     RecipeDao recipeDao = new RecipeDao();
     PlanDao planDao = new PlanDao();
     AdminDao adminDao = new AdminDao();
-
+    public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -33,7 +35,7 @@ public class Dashboard extends HttpServlet {
             int adminId = (int) session.getAttribute("adminId");
 
             req.setAttribute("adminName", adminDao.read(adminId).getFirstName());
-            req.setAttribute("recipeCount", recipeDao.countRecipesForCurrentUser(req));
+            req.setAttribute("recipeCount", recipeDao.countRecipesByAdminId(adminId));
             req.setAttribute("planCount", planDao.getPlanCountByAdminId(adminId));
             req.setAttribute("mealList", planDao.getLastAddedPlan(adminId));
 
@@ -41,7 +43,7 @@ public class Dashboard extends HttpServlet {
 
         } catch (Exception e) {
             // redirect to OpsSomethingWentWrong.jsp servlet
-            req.setAttribute("errorMessage",e.getMessage());
+            logger.error(e.getMessage());
             getServletContext().getRequestDispatcher("/OpsSomethingWentWrong.jsp").forward(req, resp);
         }
     }
