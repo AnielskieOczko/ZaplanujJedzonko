@@ -113,16 +113,29 @@
                 <c:forEach var="meal" items="${mealList}" varStatus="rowCounter" begin="0">
 
                     <table class="table">
-
-                        <c:if test="${mealList[rowCounter.index].getDayName() != mealList[rowCounter.index - 1].getDayName()}">
-                            <thead>
-                            <tr class="d-flex">
-                                <th class="col-2">${meal.getDayName()}</th>
-                                <th class="col-8"></th>
-                                <th class="col-2"></th>
-                            </tr>
-                            </thead>
-                        </c:if>
+<%--                        added to adress item of out bounds exception for first iteration--%>
+                        <c:choose>
+                            <c:when test="${rowCounter.index == 0}">
+                                <thead>
+                                <tr class="d-flex">
+                                    <th class="col-2">${meal.getDayName()}</th>
+                                    <th class="col-8"></th>
+                                    <th class="col-2"></th>
+                                </tr>
+                                </thead>
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${mealList[rowCounter.index].getDayName() != mealList[rowCounter.index - 1].getDayName()}">
+                                    <thead>
+                                    <tr class="d-flex">
+                                        <th class="col-2">${meal.getDayName()}</th>
+                                        <th class="col-8"></th>
+                                        <th class="col-2"></th>
+                                    </tr>
+                                    </thead>
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
 
                         <tbody>
                         <tr class="d-flex">
