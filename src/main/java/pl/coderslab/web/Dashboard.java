@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/dashboard")
+@WebServlet("/app/dashboard")
 public class Dashboard extends HttpServlet {
 
     RecipeDao recipeDao = new RecipeDao();
@@ -40,7 +40,6 @@ public class Dashboard extends HttpServlet {
 
         } catch (Exception e) {
             // redirect to OpsSomethingWentWrong.jsp servlet
-            logger.error(e.getMessage());
             logger.error(e.getMessage());
             getServletContext().getRequestDispatcher("/OpsSomethingWentWrong.jsp").forward(req, resp);
         }
