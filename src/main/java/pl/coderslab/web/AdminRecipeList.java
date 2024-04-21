@@ -26,8 +26,9 @@ public class AdminRecipeList extends HttpServlet {
         int adminId = (int) session.getAttribute("adminId");
 
         List<Recipe> recipes = recipeDao.getRecipesForAdmin(adminId);
+        recipes.forEach(logger::info);
         session.setAttribute("userRecipes", recipes);
 
-        getServletContext().getRequestDispatcher("/user-recipes.jsp");
+        getServletContext().getRequestDispatcher("/admin-recipe-list.jsp").forward(req, resp);
     }
 }
