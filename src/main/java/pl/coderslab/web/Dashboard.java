@@ -25,11 +25,8 @@ public class Dashboard extends HttpServlet {
     public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
+        
         HttpSession session = req.getSession();
-        // for testing - simulate logged admin (TO BE REMOVED)
-        session.setAttribute("adminId", 1);
 
         try {
             int adminId = (int) session.getAttribute("adminId");
@@ -43,6 +40,7 @@ public class Dashboard extends HttpServlet {
 
         } catch (Exception e) {
             // redirect to OpsSomethingWentWrong.jsp servlet
+            logger.error(e.getMessage());
             logger.error(e.getMessage());
             getServletContext().getRequestDispatcher("/OpsSomethingWentWrong.jsp").forward(req, resp);
         }
