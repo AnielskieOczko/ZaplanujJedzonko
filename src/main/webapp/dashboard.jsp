@@ -107,7 +107,7 @@
             </div>
             <div class="m-4 p-4 border-dashed">
                 <h2 class="dashboard-content-title">
-                    <span>Ostatnio dodany plan:</span> ${mealList.get(0).getPlanName()}
+                    <span>Ostatnio dodany plan:</span> ${mealList.size() != 0 ? mealList.get(0).getPlanName() : "No plans available"}
                 </h2>
 
                 <c:forEach var="meal" items="${mealList}" varStatus="rowCounter" begin="0">
