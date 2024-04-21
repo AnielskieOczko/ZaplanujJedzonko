@@ -1,21 +1,15 @@
 package pl.coderslab.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.coderslab.exception.NotFoundException;
 import pl.coderslab.model.Recipe;
 import pl.coderslab.utils.DbUtil;
+
+import java.sql.*;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipeDao {
 
@@ -27,7 +21,7 @@ public class RecipeDao {
   private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = ?, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
 
   private static final String COUNT_RECIPE_QUERY = "SELECT COUNT(*) AS recipe_count FROM recipe WHERE admin_id = ?";
-
+  private static final String FIND_ALL_RECIPES_FOR_ADMIN = "SELECT recipe.id as id, recipe.name as name, recipe.description as description FROM recipe JOIN admins ON recipe.admin_id = admins.id WHERE admins.id = ? ORDER BY recipe.created DESC;";
   /**
    * Create recipe
    *
@@ -204,6 +198,29 @@ public class RecipeDao {
       e.printStackTrace();
     }
     return count;
+  }
+
+  /**
+   *
+   * @param adminId: int value which is primary key in admins table in scrumlab database.
+   * @return List of Recipe objects with populated id, name and description fields
+   */
+  public List<Recipe> getRecipesForAdmin(int adminId) {
+    List<Recipe> recipes = new ArrayList<>();
+    try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_RECIPES_FOR_ADMIN)) {
+      preparedStatement.setInt(1, adminId);
+      ResultSet resultSet = preparedStatement.executeQuery();
+      while (resultSet.next()) {
+        Recipe recipe = new Recipe();
+        recipe.setId(resultSet.getInt("id"));
+        recipe.setName(resultSet.getString("name"));
+        recipe.setDescription(resultSet.getString("description"));
+        recipes.add(recipe);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return recipes;
   }
 }
 
