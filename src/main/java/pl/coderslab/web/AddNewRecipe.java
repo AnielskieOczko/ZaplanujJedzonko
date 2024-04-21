@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/add")
+@WebServlet("/app/recipe/add")
 public class AddNewRecipe extends HttpServlet {
     RecipeDao recipeDao = new RecipeDao();
     AdminDao adminDao = new AdminDao();
