@@ -198,6 +198,7 @@ public class AdminDao {
         }
 
     }
+
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
