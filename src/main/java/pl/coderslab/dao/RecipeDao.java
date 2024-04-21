@@ -21,7 +21,7 @@ public class RecipeDao {
   private static final String UPDATE_RECIPE_QUERY = "UPDATE recipe SET name = ?, ingredients = ?, description = ?, updated = ?, preparation_time = ?, preparation = ?, admin_id = ? where id = ?;";
 
   private static final String COUNT_RECIPE_QUERY = "SELECT COUNT(*) AS recipe_count FROM recipe WHERE admin_id = ?";
-  private static final String FIND_ALL_RECIPES_FOR_ADMIN_QUERY = "SELECT recipe.id as id, recipe.name as name, recipe.description as description FROM recipe JOIN admins ON recipe.admin_id = admins.id WHERE admins.id = ? ORDER BY recipe.id;";
+  private static final String FIND_ALL_RECIPES_FOR_ADMIN_QUERY = "SELECT recipe.id as id, recipe.name as name, recipe.description as description FROM recipe JOIN admins ON recipe.admin_id = admins.id WHERE admins.id = ? ORDER BY recipe.id DESC";
   /**
    * Create recipe
    *
