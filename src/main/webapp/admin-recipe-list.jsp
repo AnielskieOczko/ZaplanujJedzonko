@@ -34,9 +34,9 @@
                             </td>
                             <td class="col-7">${recipe.getDescription()}</td>
                             <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-                                <a href="#" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>
-                                <a href="#" class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
-                                <a href="#" class="btn btn-warning rounded-0 text-light m-1">Edytuj</a>
+                                <a href="${pageContext.request.contextPath}/app/recipe/delete?id=${recipe.getId()}" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>
+                                <a href="${pageContext.request.contextPath}/app/recipe/details?id=${recipe.getId()}" class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
+                                <a href="${pageContext.request.contextPath}/app/recipe/edit?id=${recipe.getId()}" class="btn btn-warning rounded-0 text-light m-1">Edytuj</a>
                             </td>
                         </tr>
                     </c:forEach>
