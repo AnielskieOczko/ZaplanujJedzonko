@@ -11,19 +11,19 @@
             <div class="dashboard-header m-4">
                 <div class="dashboard-menu">
                     <div class="menu-item border-dashed">
-                        <a href="">
+                        <a href="${pageContext.request.contextPath}/app/recipe/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
                             <span class="title">dodaj przepis</span>
                         </a>
                     </div>
                     <div class="menu-item border-dashed">
-                        <a href="">
+                        <a href="${pageContext.request.contextPath}/app/plan/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
                             <span class="title">dodaj plan</span>
                         </a>
                     </div>
                     <div class="menu-item border-dashed">
-                        <a href="">
+                        <a href="${pageContext.request.contextPath}/app/recipe/plan/add">
                             <i class="far fa-plus-square icon-plus-square"></i>
                             <span class="title">dodaj przepis do planu</span>
                         </a>
@@ -43,13 +43,13 @@
             </div>
             <div class="m-4 p-4 border-dashed">
                 <h2 class="dashboard-content-title">
-                    <span>Ostatnio dodany plan:</span> ${mealList.size() != 0 ? mealList.get(0).getPlanName() : "No plans available"}
+                    <span>Ostatnio dodany plan:</span> ${mealList.size() != 0 ? mealList.get(0).getPlanName() : "Dodaj posilki do ostatnio dodanego planu"}
                 </h2>
 
                 <c:forEach var="meal" items="${mealList}" varStatus="rowCounter" begin="0">
 
                     <table class="table">
-                            <%--                        added to adress item of out bounds exception for first iteration--%>
+                            <%-- added to adress item of out bounds exception for first iteration--%>
                         <c:choose>
                             <c:when test="${rowCounter.index == 0}">
                                 <thead>

@@ -15,8 +15,9 @@ import java.io.IOException;
 
 @WebServlet("/app/recipe/add")
 public class AddNewRecipe extends HttpServlet {
+    public static final Logger logger = LogManager.getLogger(AddNewRecipe.class);
     RecipeDao recipeDao = new RecipeDao();
-    public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

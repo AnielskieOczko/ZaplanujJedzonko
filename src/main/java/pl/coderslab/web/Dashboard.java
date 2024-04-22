@@ -18,7 +18,7 @@ public class Dashboard extends HttpServlet {
 
     RecipeDao recipeDao = new RecipeDao();
     PlanDao planDao = new PlanDao();
-    public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
+    public static final Logger logger = LogManager.getLogger(Dashboard.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
@@ -27,16 +27,16 @@ public class Dashboard extends HttpServlet {
         try {
             int adminId = (int) session.getAttribute("adminId");
 
-            req.setAttribute("recipeCount", recipeDao.countRecipesByAdminId(adminId));
-            req.setAttribute("planCount", planDao.getPlanCountByAdminId(adminId));
-            req.setAttribute("mealList", planDao.getLastAddedPlan(adminId));
+            session.setAttribute("recipeCount", recipeDao.countRecipesByAdminId(adminId));
+            session.setAttribute("planCount", planDao.getPlanCountByAdminId(adminId));
+            session.setAttribute("mealList", planDao.getLastAddedPlan(adminId));
 
             getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
 
         } catch (Exception e) {
-            // redirect to OpsSomethingWentWrong.jsp servlet
+            // redirect to opsSomethingWentWrong.jsp servlet
             logger.error(e.getMessage());
-            getServletContext().getRequestDispatcher("/OpsSomethingWentWrong.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/opsSomethingWentWrong.jsp").forward(req, resp);
         }
     }
 }
