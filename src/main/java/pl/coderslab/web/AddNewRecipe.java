@@ -2,7 +2,6 @@ package pl.coderslab.web;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.coderslab.dao.AdminDao;
 import pl.coderslab.dao.RecipeDao;
 import pl.coderslab.model.Recipe;
 
@@ -17,14 +16,10 @@ import java.io.IOException;
 @WebServlet("/app/recipe/add")
 public class AddNewRecipe extends HttpServlet {
     RecipeDao recipeDao = new RecipeDao();
-    AdminDao adminDao = new AdminDao();
     public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        int adminId = (int) session.getAttribute("adminId");
 
-        req.setAttribute("adminName", adminDao.read(adminId).getFirstName());
         getServletContext().getRequestDispatcher("/addNewRecipe.jsp").forward(req, resp);
     }
 

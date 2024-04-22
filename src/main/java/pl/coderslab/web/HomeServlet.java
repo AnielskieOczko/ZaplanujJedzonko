@@ -1,25 +1,22 @@
 package pl.coderslab.web;
 
-import lombok.extern.java.Log;
-import pl.coderslab.dao.AdminDao;
-import pl.coderslab.dao.BookDao;
-import pl.coderslab.model.Admin;
-import pl.coderslab.model.Book;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Do not change servlet address !!!
  */
 @WebServlet("")
-@Log
 public class HomeServlet extends HttpServlet {
-  
+
+  public static Logger log = LogManager.getLogger(HomeServlet.class);
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
