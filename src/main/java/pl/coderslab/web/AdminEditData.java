@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-// TODO implementation admin data edit functinality
+// TODO implementation admin data edit functionality
 @WebServlet("/app/admin/data/edit")
 public class AdminEditData extends HttpServlet {
     @Override

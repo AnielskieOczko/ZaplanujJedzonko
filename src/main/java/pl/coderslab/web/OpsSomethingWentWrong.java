@@ -11,6 +11,6 @@ import java.io.IOException;
 public class OpsSomethingWentWrong extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.getRequestDispatcher("/OpsSomethingWentWrong.jsp").forward(req, resp);
+//        req.getRequestDispatcher("/opsSomethingWentWrong.jsp").forward(req, resp);
     }
 }

@@ -34,9 +34,9 @@ public class Dashboard extends HttpServlet {
             getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
 
         } catch (Exception e) {
-            // redirect to OpsSomethingWentWrong.jsp servlet
+            // redirect to opsSomethingWentWrong.jsp servlet
             logger.error(e.getMessage());
-            getServletContext().getRequestDispatcher("/OpsSomethingWentWrong.jsp").forward(req, resp);
+            getServletContext().getRequestDispatcher("/opsSomethingWentWrong.jsp").forward(req, resp);
         }
     }
 }
