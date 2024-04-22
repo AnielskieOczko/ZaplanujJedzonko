@@ -14,6 +14,7 @@
             <i class="fas fa-angle-right"></i>
         </a>
     </li>
+<%--    TODO: update link for plan list--%>
     <li class="nav-item">
         <a class="nav-link" href="">
             <span>Plany</span>
