@@ -27,9 +27,9 @@ public class Dashboard extends HttpServlet {
         try {
             int adminId = (int) session.getAttribute("adminId");
 
-            req.setAttribute("recipeCount", recipeDao.countRecipesByAdminId(adminId));
-            req.setAttribute("planCount", planDao.getPlanCountByAdminId(adminId));
-            req.setAttribute("mealList", planDao.getLastAddedPlan(adminId));
+            session.setAttribute("recipeCount", recipeDao.countRecipesByAdminId(adminId));
+            session.setAttribute("planCount", planDao.getPlanCountByAdminId(adminId));
+            session.setAttribute("mealList", planDao.getLastAddedPlan(adminId));
 
             getServletContext().getRequestDispatcher("/dashboard.jsp").forward(req, resp);
 
