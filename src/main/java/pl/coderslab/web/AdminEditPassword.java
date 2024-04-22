@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+// TODO implementation of admin password edit functionality
 @WebServlet("/app/admin/password/edit")
 public class AdminEditPassword extends HttpServlet {
     @Override
