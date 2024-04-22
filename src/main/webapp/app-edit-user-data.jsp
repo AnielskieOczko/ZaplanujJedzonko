@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+
+<%-- TODO implementation of edit user data funcionality, this is just template--%>
 <%@include file="viewCommonParts/appHeader.jsp" %>
 
 <section class="dashboard-section">
