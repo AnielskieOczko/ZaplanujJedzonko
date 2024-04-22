@@ -1,6 +1,7 @@
 package pl.coderslab.web;
 
-import lombok.extern.java.Log;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,9 +14,9 @@ import java.io.IOException;
  * Do not change servlet address !!!
  */
 @WebServlet("")
-@Log
 public class HomeServlet extends HttpServlet {
-  
+
+  public static Logger log = LogManager.getLogger(HomeServlet.class);
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {

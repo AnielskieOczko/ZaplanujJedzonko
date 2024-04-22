@@ -1,6 +1,7 @@
 package pl.coderslab.web;
 
-import lombok.extern.java.Log;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.coderslab.dao.AdminDao;
 import pl.coderslab.exception.UnauthorizedAdminException;
 import pl.coderslab.model.Admin;
@@ -14,10 +15,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
-@Log
+
 @WebServlet("/login")
 public class Login extends HttpServlet {
-
+  public static final Logger log = LogManager.getLogger(Login.class);
   public static final AdminDao adminDao = new AdminDao();
 
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -39,8 +40,8 @@ public class Login extends HttpServlet {
       loginSession.setAttribute("adminId", authenticatedAdmin.getId());
       loginSession.setAttribute("adminName", authenticatedAdmin.getFirstName());
 
-      log.info("Session Id: " + loginSession.getId());
-      log.info("UserId: " + loginSession.getAttribute("adminId"));
+        log.info("Session Id: {}", loginSession.getId());
+        log.info("UserId: {}", loginSession.getAttribute("adminId"));
 
       resp.sendRedirect("/app/dashboard");
 
