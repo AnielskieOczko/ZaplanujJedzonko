@@ -36,7 +36,7 @@ public class AddNewPlan extends HttpServlet {
             Plan planToAdd = new Plan(planName, planDescription, adminId);
             planDao.create(planToAdd);
             logger.info("plan added to DB: {}", planToAdd);
-//            TODO: change redirect to plan list view
+//            TODO: change redirect to plan list view /app/plan/list
             resp.sendRedirect("/app/dashboard");
         } catch (Exception e) {
             logger.error(e.getMessage());
