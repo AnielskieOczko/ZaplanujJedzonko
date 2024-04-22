@@ -18,7 +18,7 @@ public class Dashboard extends HttpServlet {
 
     RecipeDao recipeDao = new RecipeDao();
     PlanDao planDao = new PlanDao();
-    public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
+    public static final Logger logger = LogManager.getLogger(Dashboard.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         

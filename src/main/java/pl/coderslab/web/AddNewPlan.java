@@ -16,7 +16,7 @@ import java.net.http.HttpRequest;
 @WebServlet("/app/plan/add")
 public class AddNewPlan extends HttpServlet {
 
-    public static final Logger logger = LogManager.getLogger(IsLoggedInFilter.class);
+    public static final Logger logger = LogManager.getLogger(AddNewPlan.class);
     PlanDao planDao = new PlanDao();
 
     @Override
