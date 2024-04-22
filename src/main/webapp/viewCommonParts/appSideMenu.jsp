@@ -9,7 +9,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/app-recipes.html">
+        <a class="nav-link" href="${pageContext.request.contextPath}/app/recipe/list">
             <span>Przepisy</span>
             <i class="fas fa-angle-right"></i>
         </a>
@@ -21,13 +21,13 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/app-edit-user-data.html">
+        <a class="nav-link" href="${pageContext.request.contextPath}/app/admin/data/edit">
             <span>Edytuj dane</span>
             <i class="fas fa-angle-right"></i>
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link disabled" href="/app-edit-password.html">
+        <a class="nav-link disabled" href="${pageContext.request.contextPath}/app/admin/password/edit">
             <span>Zmień hasło</span>
             <i class="fas fa-angle-right"></i>
         </a>
