@@ -243,6 +243,38 @@ public class PlanDao {
         return adminPlans;
     }
 
-   
+
+    public PlanDto getPlanForAdmin(int planId) {
+        Plan plan = read(planId);
+        if (plan != null) {
+            PlanDto planDto = new PlanDto();
+            planDto.setId(plan.getId());
+            planDto.setName(plan.getName());
+            planDto.setDescription(plan.getDescription());
+
+            try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_PLAN_DETAILS_QUERY)) {
+                preparedStatement.setInt(1, planId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    MealDetailsDto mealDetailsDto = new MealDetailsDto();
+                    mealDetailsDto.setDayName(resultSet.getString("day_name.name"));
+                    mealDetailsDto.setMealName(resultSet.getString("meal_name"));
+                    mealDetailsDto.setRecipeId(resultSet.getInt("recipe.id"));
+                    mealDetailsDto.setRecipeName(resultSet.getString("recipe_name"));
+
+                    planDto.getMealDetailsDtoList().add(mealDetailsDto);
+                }
+                return planDto;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        return null;
+    }
+
 
 }
