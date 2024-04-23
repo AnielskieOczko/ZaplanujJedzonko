@@ -175,7 +175,8 @@ public class PlanDao {
                 String planName = resultSet.getString("plan.name");
 
                 PlanDto lastAddedPlanDto = new PlanDto();
-                lastAddedPlanDto.setPlanName(planName);
+                lastAddedPlanDto.setName(planName);
+                lastAddedPlanDto.setId(planId);
 
                 secondStatement.setInt(1, planId);
                 ResultSet result = secondStatement.executeQuery();
@@ -224,9 +225,9 @@ public class PlanDao {
 
             while (resultSet.next()) {
                 PlanDto planDto = new PlanDto();
-                planDto.setPlanId(resultSet.getInt("id"));
-                planDto.setPlanName(resultSet.getString("name"));
-                planDto.setPlanDescription(resultSet.getString("description"));
+                planDto.setId(resultSet.getInt("id"));
+                planDto.setName(resultSet.getString("name"));
+                planDto.setDescription(resultSet.getString("description"));
                 adminPlans.add(planDto);
             }
         } catch (SQLException e) {

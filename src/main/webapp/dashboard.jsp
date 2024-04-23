@@ -43,7 +43,7 @@
             </div>
             <div class="m-4 p-4 border-dashed">
                 <h2 class="dashboard-content-title">
-                    <span>Ostatnio dodany plan:</span> ${lastPlan != null ? lastPlan.getPlanName() : "Nie dodałeś jeszcze żadnego planu"}
+                    <span>Ostatnio dodany plan:</span> ${lastPlan != null ? lastPlan.getName() : "Nie dodałeś jeszcze żadnego planu"}
                 </h2>
                 <c:if test="${lastPlan.getMealDetailsDtoList().size() == 0}">
                     <p>Nie dodałeś jeszcze żadnego przepisu do tego planu.</p>

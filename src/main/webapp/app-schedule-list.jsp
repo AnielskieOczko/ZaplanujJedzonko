@@ -36,15 +36,15 @@
                         </c:if>
                         <c:forEach var="plan" items="${adminPlans}" >
                             <tr class="d-flex">
-                                <td class="col-1">${plan.getPlanId()}</td>
-                                <td class="col-2">${plan.getPlanName()}</td>
+                                <td class="col-1">${plan.getId()}</td>
+                                <td class="col-2">${plan.getName()}</td>
                                 <td class="col-7">
                                     ${plan.getPlanDescription()}
                                 </td>
                                 <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
-                                    <a href="${pageContext.request.contextPath}/app/plan/delete?id=${plan.getPlanId()}" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>
-                                    <a href="${pageContext.request.contextPath}/app/plan/details?id=${plan.getPlanId()}" class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
-                                    <a href="${pageContext.request.contextPath}/app/plan/edit?id=${plan.getPlanId()}" class="btn btn-warning rounded-0 text-light m-1">Edytuj</a>
+                                    <a href="${pageContext.request.contextPath}/app/plan/delete?id=${plan.getId()}" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>
+                                    <a href="${pageContext.request.contextPath}/app/plan/details?id=${plan.getId()}" class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
+                                    <a href="${pageContext.request.contextPath}/app/plan/edit?id=${plan.getId()}" class="btn btn-warning rounded-0 text-light m-1">Edytuj</a>
                                 </td>
                             </tr>
                         </c:forEach>
