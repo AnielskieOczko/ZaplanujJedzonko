@@ -17,7 +17,7 @@ import java.util.List;
  * This is a data transfer object whose data fields will be used to be displayed on the view.
  */
 public class PlanDto {
-    private String planId;
+    private int planId;
     private String planName;
     private String planDescription;
     List<MealDetailsDto> mealDetailsDtoList = new ArrayList<>();
