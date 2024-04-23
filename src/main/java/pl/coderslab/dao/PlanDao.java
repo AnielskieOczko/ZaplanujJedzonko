@@ -181,6 +181,10 @@ public class PlanDao {
                 lastAddedPlanDto.setName(planName);
                 lastAddedPlanDto.setId(planId);
 
+
+                
+
+
                 secondStatement.setInt(1, planId);
                 ResultSet result = secondStatement.executeQuery();
 
