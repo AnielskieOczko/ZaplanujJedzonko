@@ -174,6 +174,8 @@ public class PlanDao {
 
                 PlanDto lastAddedPlanDto = new PlanDto();
                 lastAddedPlanDto.setName(planName);
+                lastAddedPlanDto.setId(planId);
+                
 
                 secondStatement.setInt(1, planId);
                 ResultSet result = secondStatement.executeQuery();
