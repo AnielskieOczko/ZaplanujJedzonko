@@ -39,7 +39,7 @@
                                 <td class="col-1">${plan.getId()}</td>
                                 <td class="col-2">${plan.getName()}</td>
                                 <td class="col-7">
-                                    ${plan.getPlanDescription()}
+                                    ${plan.getDescription()}
                                 </td>
                                 <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
                                     <a href="${pageContext.request.contextPath}/app/plan/delete?id=${plan.getId()}" class="btn btn-danger rounded-0 text-light m-1">Usuń</a>
