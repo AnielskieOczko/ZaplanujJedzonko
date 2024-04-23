@@ -3,8 +3,8 @@ package pl.coderslab.dao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.coderslab.dto.MealDetailsDto;
-import pl.coderslab.exception.NotFoundException;
 import pl.coderslab.dto.PlanDto;
+import pl.coderslab.exception.NotFoundException;
 import pl.coderslab.model.Plan;
 import pl.coderslab.utils.DbUtil;
 
@@ -24,8 +24,8 @@ public class PlanDao {
     public static final String FIND_ALL_PLANS_QUERY = "SELECT * FROM plan;";
     public static final String UPDATE_PLAN_QUERY = "UPDATE plan SET name = ?, description = ? WHERE id = ?;";
     public static final String DELETE_PLAN_QUERY = "DELETE FROM plan WHERE id = ?;";
-    public static final String FIND_LAST_PLAN_QUERY = "SELECT plan.id, plan.name FROM plan JOIN admins ON admins.id = plan.admin_id WHERE admins.id = ? ORDER BY plan.id DESC LIMIT 1;";
-    public static final String FIND_LAST_ADDED_PLAN_DETAILS_QUERY = """
+    public static final String FIND_LAST_PLAN_QUERY = "SELECT id, name FROM plan  WHERE admin_id = ? ORDER BY id DESC LIMIT 1;";
+    public static final String FIND_PLAN_DETAILS_QUERY = """
             SELECT recipe_plan.meal_name as meal_name,
                    recipe.name           as recipe_name,
                    recipe.id,
@@ -40,7 +40,9 @@ public class PlanDao {
 
     private static final String COUNT_PLAN_QUERY = "SELECT COUNT(*) AS plan_count FROM plan WHERE admin_id = ?";
 
-    public static final String FIND_ALL_PLANS_FOR_ADMIN = "SELECT * FROM plan WHERE admin_id = ? ORDER BY id DESC;";
+    public static final String FIND_ALL_PLANS_FOR_ADMIN_QUERY = "SELECT * FROM plan WHERE admin_id = ? ORDER BY id DESC;";
+
+
     /**
      * Create plan
      *
@@ -81,8 +83,8 @@ public class PlanDao {
      * @return Plan instance once any record retrieved from a database
      */
     public Plan read(int planId) {
-        Plan plan = new Plan();
         try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(READ_PLAN_QUERY)) {
+            Plan plan = new Plan();
             preparedStatement.setInt(1, planId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -92,12 +94,13 @@ public class PlanDao {
                     plan.setCreated(resultSet.getString("created"));
                     plan.setAdminId(resultSet.getInt("admin_id"));
                 }
+                return plan;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return plan;
+        return null;
     }
 
 
@@ -167,12 +170,12 @@ public class PlanDao {
      * @return List of data transfer objects whose fields wille be used to populate view.
      */
     public PlanDto getLastAddedPlan(int adminId) {
-        try (Connection connection = DbUtil.getConnection(); PreparedStatement firstStatement = connection.prepareStatement(FIND_LAST_PLAN_QUERY); PreparedStatement secondStatement = connection.prepareStatement(FIND_LAST_ADDED_PLAN_DETAILS_QUERY);) {
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement firstStatement = connection.prepareStatement(FIND_LAST_PLAN_QUERY); PreparedStatement secondStatement = connection.prepareStatement(FIND_PLAN_DETAILS_QUERY);) {
             firstStatement.setInt(1, adminId);
             ResultSet resultSet = firstStatement.executeQuery();
             if (resultSet.next()) {
-                int planId = resultSet.getInt("plan.id");
-                String planName = resultSet.getString("plan.name");
+                int planId = resultSet.getInt("id");
+                String planName = resultSet.getString("name");
 
                 PlanDto lastAddedPlanDto = new PlanDto();
                 lastAddedPlanDto.setName(planName);
@@ -218,7 +221,7 @@ public class PlanDao {
 
     public List<PlanDto> getAllPlansForAdmin(int adminId) {
         List<PlanDto> adminPlans = new ArrayList<>();
-        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_PLANS_FOR_ADMIN)) {
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_PLANS_FOR_ADMIN_QUERY)) {
             preparedStatement.setInt(1, adminId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -235,4 +238,7 @@ public class PlanDao {
         }
         return adminPlans;
     }
+
+   
+
 }
