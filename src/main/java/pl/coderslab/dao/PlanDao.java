@@ -2,9 +2,9 @@ package pl.coderslab.dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.coderslab.dto.MealDetails;
+import pl.coderslab.dto.MealDetailsDto;
 import pl.coderslab.exception.NotFoundException;
-import pl.coderslab.dto.LastAddedPlanDto;
+import pl.coderslab.dto.PlanDto;
 import pl.coderslab.model.Plan;
 import pl.coderslab.utils.DbUtil;
 
@@ -164,7 +164,7 @@ public class PlanDao {
      * @param adminId: int value which is primary key in admins' table in a scrumlab database.
      * @return List of data transfer objects whose fields wille be used to populate view.
      */
-    public LastAddedPlanDto getLastAddedPlan(int adminId) {
+    public PlanDto getLastAddedPlan(int adminId) {
         try (Connection connection = DbUtil.getConnection(); PreparedStatement firstStatement = connection.prepareStatement(FIND_LAST_PLAN_QUERY); PreparedStatement secondStatement = connection.prepareStatement(FIND_LAST_ADDED_PLAN_DETAILS_QUERY);) {
             firstStatement.setInt(1, adminId);
             ResultSet resultSet = firstStatement.executeQuery();
@@ -172,20 +172,20 @@ public class PlanDao {
                 int planId = resultSet.getInt("plan.id");
                 String planName = resultSet.getString("plan.name");
 
-                LastAddedPlanDto lastAddedPlanDto = new LastAddedPlanDto();
+                PlanDto lastAddedPlanDto = new PlanDto();
                 lastAddedPlanDto.setPlanName(planName);
 
                 secondStatement.setInt(1, planId);
                 ResultSet result = secondStatement.executeQuery();
 
                     while (result.next()) {
-                        MealDetails mealDetails = new MealDetails();
-                        mealDetails.setDayName(result.getString("day_name.name"));
-                        mealDetails.setMeal_name(result.getString("meal_name"));
-                        mealDetails.setRecipeId(result.getInt("recipe.id"));
-                        mealDetails.setRecipeName(result.getString("recipe_name"));
+                        MealDetailsDto mealDetailsDto = new MealDetailsDto();
+                        mealDetailsDto.setDayName(result.getString("day_name.name"));
+                        mealDetailsDto.setMeal_name(result.getString("meal_name"));
+                        mealDetailsDto.setRecipeId(result.getInt("recipe.id"));
+                        mealDetailsDto.setRecipeName(result.getString("recipe_name"));
 
-                        lastAddedPlanDto.getMealDetailsList().add(mealDetails);
+                        lastAddedPlanDto.getMealDetailsDtoList().add(mealDetailsDto);
                     }
                 return lastAddedPlanDto;
             }
