@@ -46,7 +46,7 @@
                     <span>Ostatnio dodany plan:</span> ${lastPlan != null ? lastPlan.getPlanName() : "Nie dodałeś jeszcze żadnego planu"}
                 </h2>
                 <c:if test="${lastPlan.getMealDetailsList().size() == 0}">
-                    <p>Nie dodałeś jeszcze żadnego posiłku do tego planu.</p>
+                    <p>Nie dodałeś jeszcze żadnego przepisu do tego planu.</p>
                 </c:if>
 
                 <c:forEach var="meal" items="${lastPlan.getMealDetailsList()}" varStatus="rowCounter" begin="0">
