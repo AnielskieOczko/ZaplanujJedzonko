@@ -16,7 +16,7 @@
     </li>
 <%--    TODO: update link for plan list--%>
     <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="${pageContext.request.contextPath}/app/plan/list">
             <span>Plany</span>
             <i class="fas fa-angle-right"></i>
         </a>

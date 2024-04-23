@@ -39,6 +39,8 @@ public class PlanDao {
                         """;
 
     private static final String COUNT_PLAN_QUERY = "SELECT COUNT(*) AS plan_count FROM plan WHERE admin_id = ?";
+
+    public static final String FIND_ALL_PLANS_FOR_ADMIN = "SELECT * FROM plan WHERE admin_id = ? ORDER BY id DESC;";
     /**
      * Create plan
      *
@@ -211,5 +213,25 @@ public class PlanDao {
             logger.error(e.getMessage());
         }
         return count;
+    }
+
+    public List<PlanDto> getAllPlansForAdmin(int adminId) {
+        List<PlanDto> adminPlans = new ArrayList<>();
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_PLANS_FOR_ADMIN)) {
+            preparedStatement.setInt(1, adminId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                PlanDto planDto = new PlanDto();
+                planDto.setPlanId(resultSet.getInt("id"));
+                planDto.setPlanName(resultSet.getString("name"));
+                planDto.setPlanDescription(resultSet.getString("description"));
+                adminPlans.add(planDto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return adminPlans;
     }
 }
