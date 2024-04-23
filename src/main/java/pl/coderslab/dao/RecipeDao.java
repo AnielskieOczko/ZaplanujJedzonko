@@ -66,7 +66,7 @@ public class RecipeDao {
   ;
 
   /**
-   * Get recipe by id
+   * Get a recipe by id
    *
    * @param id: of the recipe record to be returned by sql query
    * @return Recipe instance once any record retrieved from database
@@ -202,7 +202,7 @@ public class RecipeDao {
 
   /**
    *
-   * @param adminId: int value which is primary key in admins table in scrumlab database.
+   * @param adminId: int value which is primary key in admins' table in a scrumlab database.
    * @return List of Recipe objects with populated id, name and description fields
    */
   public List<Recipe> getRecipesForAdmin(int adminId) {

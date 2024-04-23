@@ -12,7 +12,7 @@ import lombok.ToString;
 public class MealDetailsDto {
 
     private String dayName;
-    private String meal_name;
+    private String mealName;
     private int recipeId;
     private String recipeName;
 }

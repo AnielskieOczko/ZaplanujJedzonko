@@ -45,11 +45,11 @@
                 <h2 class="dashboard-content-title">
                     <span>Ostatnio dodany plan:</span> ${lastPlan != null ? lastPlan.getPlanName() : "Nie dodałeś jeszcze żadnego planu"}
                 </h2>
-                <c:if test="${lastPlan.getMealDetailsList().size() == 0}">
+                <c:if test="${lastPlan.getMealDetailsDtoList().size() == 0}">
                     <p>Nie dodałeś jeszcze żadnego przepisu do tego planu.</p>
                 </c:if>
 
-                <c:forEach var="meal" items="${lastPlan.getMealDetailsList()}" varStatus="rowCounter" begin="0">
+                <c:forEach var="meal" items="${lastPlan.getMealDetailsDtoList()}" varStatus="rowCounter" begin="0">
 
                     <table class="table">
                             <%-- added to adress item of out bounds exception for first iteration--%>
@@ -64,7 +64,7 @@
                                 </thead>
                             </c:when>
                             <c:otherwise>
-                                <c:if test="${lastPlan.getMealDetailsList()[rowCounter.index].getDayName() != lastPlan.getMealDetailsList()[rowCounter.index - 1].getDayName()}">
+                                <c:if test="${lastPlan.getMealDetailsDtoList()[rowCounter.index].getDayName() != lastPlan.getMealDetailsDtoList()[rowCounter.index - 1].getDayName()}">
                                     <thead>
                                     <tr class="d-flex">
                                         <th class="col-2">${meal.getDayName()}</th>
@@ -78,7 +78,7 @@
 
                         <tbody>
                         <tr class="d-flex">
-                            <td class="col-2">${meal.getMeal_name()}</td>
+                            <td class="col-2">${meal.getMealName()}</td>
                             <td class="col-8">${meal.getRecipeName()}</td>
                             <td class="col-2">
                                 <a href="/app/recipe/details?id=${meal.getRecipeId()}">

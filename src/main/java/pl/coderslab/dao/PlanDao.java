@@ -181,7 +181,7 @@ public class PlanDao {
                     while (result.next()) {
                         MealDetailsDto mealDetailsDto = new MealDetailsDto();
                         mealDetailsDto.setDayName(result.getString("day_name.name"));
-                        mealDetailsDto.setMeal_name(result.getString("meal_name"));
+                        mealDetailsDto.setMealName(result.getString("meal_name"));
                         mealDetailsDto.setRecipeId(result.getInt("recipe.id"));
                         mealDetailsDto.setRecipeName(result.getString("recipe_name"));
 
