@@ -165,9 +165,9 @@ public class PlanDao {
      * @return List of data transfer objects whose fields wille be used to populate view.
      */
     public LastAddedPlanDto getLastAddedPlan(int adminId) {
-        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_LAST_PLAN_QUERY)) {
-            preparedStatement.setInt(1, adminId);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement firstStatement = connection.prepareStatement(FIND_LAST_PLAN_QUERY); PreparedStatement secondStatement = connection.prepareStatement(FIND_LAST_ADDED_PLAN_DETAILS_QUERY);) {
+            firstStatement.setInt(1, adminId);
+            ResultSet resultSet = firstStatement.executeQuery();
             if (resultSet.next()) {
                 int planId = resultSet.getInt("plan.id");
                 String planName = resultSet.getString("plan.name");
@@ -175,9 +175,8 @@ public class PlanDao {
                 LastAddedPlanDto lastAddedPlanDto = new LastAddedPlanDto();
                 lastAddedPlanDto.setPlanName(planName);
 
-                PreparedStatement innerStatement = connection.prepareStatement(FIND_LAST_ADDED_PLAN_DETAILS_QUERY);
-                innerStatement.setInt(1, planId);
-                ResultSet result = innerStatement.executeQuery();
+                secondStatement.setInt(1, planId);
+                ResultSet result = secondStatement.executeQuery();
 
                     while (result.next()) {
                         MealDetails mealDetails = new MealDetails();
