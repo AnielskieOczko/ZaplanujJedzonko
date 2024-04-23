@@ -43,10 +43,13 @@
             </div>
             <div class="m-4 p-4 border-dashed">
                 <h2 class="dashboard-content-title">
-                    <span>Ostatnio dodany plan:</span> ${mealList.size() != 0 ? mealList.get(0).getPlanName() : "Dodaj posilki do ostatnio dodanego planu"}
+                    <span>Ostatnio dodany plan:</span> ${lastPlan != null ? lastPlan.getName() : "Nie dodałeś jeszcze żadnego planu"}
                 </h2>
+                <c:if test="${lastPlan.getMealDetailsDtoList().size() == 0}">
+                    <p>Nie dodałeś jeszcze żadnego przepisu do tego planu.</p>
+                </c:if>
 
-                <c:forEach var="meal" items="${mealList}" varStatus="rowCounter" begin="0">
+                <c:forEach var="meal" items="${lastPlan.getMealDetailsDtoList()}" varStatus="rowCounter" begin="0">
 
                     <table class="table">
                             <%-- added to adress item of out bounds exception for first iteration--%>
@@ -61,7 +64,7 @@
                                 </thead>
                             </c:when>
                             <c:otherwise>
-                                <c:if test="${mealList[rowCounter.index].getDayName() != mealList[rowCounter.index - 1].getDayName()}">
+                                <c:if test="${lastPlan.getMealDetailsDtoList()[rowCounter.index].getDayName() != lastPlan.getMealDetailsDtoList()[rowCounter.index - 1].getDayName()}">
                                     <thead>
                                     <tr class="d-flex">
                                         <th class="col-2">${meal.getDayName()}</th>
@@ -75,10 +78,12 @@
 
                         <tbody>
                         <tr class="d-flex">
-                            <td class="col-2">${meal.getMeal_name()}</td>
+                            <td class="col-2">${meal.getMealName()}</td>
                             <td class="col-8">${meal.getRecipeName()}</td>
                             <td class="col-2">
+                                <a href="/app/recipe/details?id=${meal.getRecipeId()}">
                                 <button type="button" class="btn btn-primary rounded-0">Szczegóły</button>
+                                </a>
                             </td>
                         </tr>
                         </tbody>

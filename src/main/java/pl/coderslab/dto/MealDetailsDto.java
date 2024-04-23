@@ -1,4 +1,4 @@
-package pl.coderslab.model;
+package pl.coderslab.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,14 +9,10 @@ import lombok.ToString;
 @Setter
 @ToString
 @NoArgsConstructor
+public class MealDetailsDto {
 
-/**
- * This is data transfer object whose data fields will be used to be displayed on the view.
- */
-public class LastAddedPlanDto {
-    private String planName;
     private String dayName;
-    private String meal_name;
+    private String mealName;
     private int recipeId;
     private String recipeName;
 }
