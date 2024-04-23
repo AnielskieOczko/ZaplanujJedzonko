@@ -173,7 +173,7 @@ public class PlanDao {
                 String planName = resultSet.getString("plan.name");
 
                 PlanDto lastAddedPlanDto = new PlanDto();
-                lastAddedPlanDto.setPlanName(planName);
+                lastAddedPlanDto.setName(planName);
 
                 secondStatement.setInt(1, planId);
                 ResultSet result = secondStatement.executeQuery();
