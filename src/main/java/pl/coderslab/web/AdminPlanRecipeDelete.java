@@ -6,13 +6,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.coderslab.dao.PlanDao;
 
 @WebServlet("/app/plan/recipe/delete")
-public class AdminRecipeDelete extends HttpServlet {
+public class AdminPlanRecipeDelete extends HttpServlet {
 
   public static final Logger logger = LogManager.getLogger(AdminPlanDetails.class);
   public static final PlanDao planDao = new PlanDao();
