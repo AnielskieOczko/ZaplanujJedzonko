@@ -11,6 +11,11 @@
                 <!-- add name attribute for all inputs -->
                 <form class="padding-small text-center" method="POST" action="${pageContext.request.contextPath}/register">
                     <h1 class="text-color-darker">Rejestracja</h1>
+                    <c:if test="${errorMessage != null}">
+                        <div class="alert alert-danger text-center mt-3">
+                            <c:out value="${errorMessage}" />
+                        </div>
+                    </c:if>
                     <div class="form-group">
                         <input type="text" class="form-control" id="first-name" name="first-name" placeholder="podaj imię" required>
                     </div>
