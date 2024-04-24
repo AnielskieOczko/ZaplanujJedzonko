@@ -22,9 +22,15 @@ public class AdminEditRecipe extends HttpServlet {
         HttpSession session = req.getSession();
         int recipeId = Integer.parseInt(req.getParameter("id"));
         Recipe recipe = recipeDao.read(recipeId);
-        session.setAttribute("recipe", recipe);
-        session.setAttribute("recipeIngredients", recipe.getIngredientList());
-        getServletContext().getRequestDispatcher("/app-edit-recipe.jsp").forward(req, resp);
+        
+        if (recipe != null) {
+            session.setAttribute("recipe", recipe);
+            session.setAttribute("recipeIngredients", recipe.getIngredientList());
+            getServletContext().getRequestDispatcher("/app-edit-recipe.jsp").forward(req, resp);
+        } else {
+//            TODO: Error handling to discuss
+            resp.sendRedirect("/ops");
+        }
     }
 
     @Override
@@ -42,6 +48,12 @@ public class AdminEditRecipe extends HttpServlet {
         Recipe editedRecipe = new Recipe(recipeName, recipeIngredients, recipeDescription, recipePreparationTime, recipePreparation, adminId);
         editedRecipe.setId(recipeId);
 
-        logger.info(editedRecipe);
+        if (recipeDao.update(editedRecipe) > 0) {
+            resp.sendRedirect("/app/recipe/list");
+        } else {
+//            TODO: Error handling to discuss
+            resp.sendRedirect("/ops");
+        }
+
     }
 }

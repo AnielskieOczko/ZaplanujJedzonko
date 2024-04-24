@@ -12,6 +12,12 @@
                 <div class="mt-4 ml-4 mr-4">
                     <!-- fix action, method -->
                     <!-- add name attribute for all inputs -->
+                    <c:if test="${not empty errorMessage}">
+                        <div class="alert alert-danger text-center mt-3">
+                            <c:out value="${errorMessage}" />
+                        </div>
+                    </c:if>
+
                     <form METHOD="POST" action="${pageContext.request.contextPath}/app/recipe/edit?id=${recipe.getId()}">
                         <div class="row border-bottom border-3">
                             <div class="col"><h3 class="color-header text-uppercase">Edycja przepisu</h3></div>
@@ -55,7 +61,6 @@
                                         ${recipe.getIngredients()}
                                     </textarea>
                             </div>
-                            <input hidden value="${recipe.getId()}">
                         </div>
                     </form>
                 </div>
