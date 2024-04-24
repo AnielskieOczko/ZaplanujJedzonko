@@ -163,15 +163,16 @@ public class PlanDao {
      *
      * @param plan: Plan instance with id which is used to update particular record in a database
      */
-    public void update(Plan plan) {
+    public int update(Plan plan) {
         try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PLAN_QUERY)) {
             preparedStatement.setString(1, plan.getName());
             preparedStatement.setString(2, plan.getDescription());
             preparedStatement.setInt(3, plan.getId());
 
-            preparedStatement.executeUpdate();
+            return preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
+            return 0;
         }
     }
 
