@@ -5,9 +5,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-
+@WebFilter("/*")
 public class EncodingFilter implements Filter {
     public static final Logger log = LogManager.getLogger(EncodingFilter.class);
     private String encoding = "UTF-8";
