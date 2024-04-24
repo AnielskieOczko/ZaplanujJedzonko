@@ -36,6 +36,10 @@ public class Register extends HttpServlet {
         var returned = adminDao.create(admin);
         if (returned != null) {
             resp.sendRedirect("/login");
+        } else {
+            String errorMessage = "Podany email jest już w użyciu";
+            req.setAttribute("errorMessage", errorMessage);
+            getServletContext().getRequestDispatcher("/registration.jsp").forward(req, resp);
         }
     }
 }

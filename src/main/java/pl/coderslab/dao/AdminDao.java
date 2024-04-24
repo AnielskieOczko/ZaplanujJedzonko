@@ -108,8 +108,8 @@ public class AdminDao {
             }
         } catch (Exception e) {
             log.error(e.getMessage());
+            return null;
         }
-        return null;
     }
 
     public int delete(Integer adminId) {
