@@ -26,17 +26,17 @@ public class PlanDao {
     public static final String DELETE_PLAN_QUERY = "DELETE FROM plan WHERE id = ?;";
     public static final String FIND_LAST_PLAN_QUERY = "SELECT id, name FROM plan  WHERE admin_id = ? ORDER BY id DESC LIMIT 1;";
     public static final String FIND_PLAN_DETAILS_QUERY = """
-            SELECT recipe_plan.meal_name as meal_name,
-                   recipe.name           as recipe_name,
-                   recipe.id,
-                   day_name.name
-            FROM recipe_plan
-                     JOIN recipe ON recipe_plan.recipe_id = recipe.id
-                     JOIN plan ON recipe_plan.plan_id = plan.id
-                     JOIN day_name ON recipe_plan.day_name_id = day_name.id
-            WHERE plan.id = ?
-            order by day_name.display_order, recipe_plan.display_order;
-                        """;
+            SELECT recipe_plan.id        as id,
+                  recipe_plan.meal_name as meal_name,
+                  recipe.name           as recipe_name,
+                  recipe.id,
+                  day_name.name
+           FROM recipe_plan
+                    JOIN recipe ON recipe_plan.recipe_id = recipe.id
+                    JOIN plan ON recipe_plan.plan_id = plan.id
+                    JOIN day_name ON recipe_plan.day_name_id = day_name.id
+           WHERE plan.id = ?
+           order by day_name.display_order, recipe_plan.display_order;""";
 
     private static final String COUNT_PLAN_QUERY = "SELECT COUNT(*) AS plan_count FROM plan WHERE admin_id = ?";
 
@@ -253,6 +253,7 @@ public class PlanDao {
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     MealDetailsDto mealDetailsDto = new MealDetailsDto();
+                    mealDetailsDto.setRecipePlanId(resultSet.getInt("id"));
                     mealDetailsDto.setDayName(resultSet.getString("day_name.name"));
                     mealDetailsDto.setMealName(resultSet.getString("meal_name"));
                     mealDetailsDto.setRecipeId(resultSet.getInt("recipe.id"));
