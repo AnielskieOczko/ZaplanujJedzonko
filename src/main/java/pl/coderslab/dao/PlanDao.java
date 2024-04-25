@@ -44,6 +44,10 @@ public class PlanDao {
 
     public static final String ADD_RECIPE_TO_PLAN = "INSERT INTO recipe_plan (recipe_id, meal_name, display_order, day_name_id, plan_id) VALUES (?, ?, ?, ?, ?);";
 
+    public static final String GET_PLAN_ID_BY_RECIPE_ID = "SELECT plan_id FROM recipe_plan WHERE id = ?";
+
+    public static final String DELETE_RECIPE_FROM_PLAN_QUERY = "DELETE FROM recipe_plan WHERE id = ?;";
+
 
     public int setAddRecipeToPlan(int recipeId, String mealName, int displayOrder, int dayNameId, int planId) {
         try (Connection connection = DbUtil.getConnection();
@@ -302,6 +306,36 @@ public class PlanDao {
         }
 
         return null;
+    }
+
+
+    public Integer getPlanIdByRecipePlanId(int recipePlanId) {
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(GET_PLAN_ID_BY_RECIPE_ID)) {
+            preparedStatement.setInt(1, recipePlanId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("plan_id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public void deleteRecipeFromPlan(int recipePlanId) throws NotFoundException {
+        try (Connection connection = DbUtil.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(
+                DELETE_RECIPE_FROM_PLAN_QUERY)) {
+            preparedStatement.setInt(1, recipePlanId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new NotFoundException("Recipe record in plan not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
