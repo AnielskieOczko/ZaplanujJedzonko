@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Potwierdzenie usunięcia przepisu</title>
+    <title>Potwierdzenie usunięcia planu</title>
     <%@include file="viewCommonParts/appHeader.jsp" %>
 </head>
 
