@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class MealDetailsDto {
-
+    private int recipePlanId;
     private String dayName;
     private String mealName;
     private int recipeId;

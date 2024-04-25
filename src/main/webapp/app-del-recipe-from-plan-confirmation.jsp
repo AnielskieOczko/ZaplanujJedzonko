@@ -21,10 +21,21 @@
 
             <h2 class="text-color-darker text-center" >Czy na pewno chcesz usunąć przepis z planu?</h2>
 
-            <form id="confirmationForm"  method="post" class="container w-25">
-                <input type="submit" name="action" value="OK" id="deleteBtn" class="btn btn-color rounded-0">
-                <input type="submit" name="action" value="Anuluj" class="btn btn-color rounded-0">
-            </form>
+            <div class="row justify-content-center">
+                <form id="confirmationForm" method="post"
+                      action="${pageContext.request.contextPath}/app/plan/recipe/delete?id=${recipePlanId}"
+                      class="col-4">
+                    <input name="delete" hidden value="true">
+                    <input type="submit" value="OK" class="btn btn-color rounded-0 float-right">
+                </form>
+
+                <form method="post"
+                      action="${pageContext.request.contextPath}/app/plan/recipe/delete?id=${recipePlanId}"
+                      class="col-4">
+                    <input name="delete" hidden value="false">
+                    <input type="submit" value="Anuluj" class="btn btn-color rounded-0 float-left">
+                </form>
+            </div>
 
             <h1></h1>
 
