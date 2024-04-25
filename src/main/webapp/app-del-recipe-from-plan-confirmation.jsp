@@ -7,7 +7,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Potwierdzenie usunięcia przepisu</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Załączanie pliku CSS -->
     <%@include file="viewCommonParts/appHeader.jsp" %>
 </head>
 
