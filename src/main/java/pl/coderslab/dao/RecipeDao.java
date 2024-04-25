@@ -141,7 +141,7 @@ public class RecipeDao {
       statement.setInt(1, id);
       int rowsAffected = statement.executeUpdate();
       if (rowsAffected == 0) {
-        throw new NotFoundException("Plan record not found");
+        throw new NotFoundException("Recipe record not found");
       }
     } catch (Exception e) {
       e.printStackTrace();
