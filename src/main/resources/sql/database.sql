@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `scrumlab`.`recipe_plan` (
   CONSTRAINT `fk_recipe_plan_plan1`
     FOREIGN KEY (`plan_id`)
     REFERENCES `scrumlab`.`plan` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 COMMENT = 'Tabela zawierająca informacje o połączeniu przepisu oraz planu.';

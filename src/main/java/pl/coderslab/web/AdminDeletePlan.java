@@ -41,6 +41,6 @@ public class AdminDeletePlan extends HttpServlet {
             }
         }
 
-        resp.sendRedirect("/app/plan/list?id=" + adminId);
+        resp.sendRedirect("/app/plan/list?");
     }
 }
