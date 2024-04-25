@@ -106,7 +106,8 @@ public class RecipeDao {
    *
    * @param recipe: Recipe instance with id which is used to update particular record in database
    */
-  public void update(Recipe recipe) {
+  public int update(Recipe recipe) {
+    int rowsUpdated = 0;
     try (Connection conn = DbUtil.getConnection()) {
       PreparedStatement statement = conn.prepareStatement(UPDATE_RECIPE_QUERY);
       recipe.setUpdated(Instant.now());
@@ -118,9 +119,12 @@ public class RecipeDao {
       statement.setString(6, recipe.getPreparation());
       statement.setInt(7, recipe.getAdminId());
       statement.setInt(8, recipe.getId());
-      statement.executeUpdate();
+
+      rowsUpdated = statement.executeUpdate();
+      return rowsUpdated;
     } catch (SQLException e) {
       e.printStackTrace();
+      return rowsUpdated;
     }
   }
 
