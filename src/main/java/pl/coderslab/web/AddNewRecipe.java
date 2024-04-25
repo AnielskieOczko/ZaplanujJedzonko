@@ -20,7 +20,6 @@ public class AddNewRecipe extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         getServletContext().getRequestDispatcher("/addNewRecipe.jsp").forward(req, resp);
     }
 
@@ -38,10 +37,8 @@ public class AddNewRecipe extends HttpServlet {
 
         try {
             Recipe recipe = new Recipe(name, ingredients, desc, prepTime, prepDesc, adminId);
-            Recipe newRecipe = recipeDao.create(recipe);
-            System.out.println(newRecipe);
-            // TODO: change redirect to /app/recipe
-            resp.sendRedirect("/app/dashboard");
+            recipeDao.create(recipe);
+            resp.sendRedirect("/app/recipe/list");
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
