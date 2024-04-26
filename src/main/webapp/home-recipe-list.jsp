@@ -16,6 +16,7 @@
                     <tr class="d-flex text-color-darker">
                         <th scope="col" class="col-2">NAZWA</th>
                         <th scope="col" class="col-7">OPIS</th>
+                        <th scope="col" class="col-2 center">AKCJE</th>
                     </tr>
                     </thead>
                     <c:if test="${recipeList.size() == 0}">
@@ -28,6 +29,9 @@
                                 ${recipe.getName()}
                             </td>
                             <td class="col-7">${recipe.getDescription()}</td>
+                            <td class="col-2 d-flex align-items-center justify-content-center flex-wrap">
+                                <a href="${pageContext.request.contextPath}/recipe/details?id=${recipe.getId()}" class="btn btn-info rounded-0 text-light m-1">Szczegóły</a>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
