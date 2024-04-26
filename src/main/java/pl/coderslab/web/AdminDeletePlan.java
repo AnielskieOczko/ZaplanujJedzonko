@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/app/plan/delete")
@@ -26,12 +25,8 @@ public class AdminDeletePlan extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
         int planId = Integer.parseInt(req.getParameter("id"));
         String isPlanToDelete = req.getParameter("delete");
-
-        int adminId = (int) session.getAttribute("adminId");
-        logger.info("Plan id to delete {}", planId);
 
         if (isPlanToDelete.equals("true")) {
             try {
@@ -41,6 +36,6 @@ public class AdminDeletePlan extends HttpServlet {
             }
         }
 
-        resp.sendRedirect("/app/plan/list?");
+        resp.sendRedirect("/app/plan/list");
     }
 }
