@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<%@include file="viewCommonParts/header.jsp"%>
+<%@include file="viewCommonParts/header.jsp" %>
 
 <section class="padding-large bg-light">
     <div id="carouselExampleControls" class="carousel slide main-slider" data-ride="carousel">
@@ -54,7 +54,7 @@
         </div>
         <div class="ml-4 align-self-center">
             <button class="btn btn-color rounded-0 mt-4 pl-4 pr-4">
-                <a href="index.html">Lorem ipsum</a>
+                <a href="${pageContext.request.contextPath}/app/dashboard">Zaplanuj Posilki</a>
             </button>
         </div>
     </div>
@@ -66,19 +66,22 @@
             <div class="col text-center">
                 <i class="fas fa-check icon-details"></i>
                 <h1>Lorem ipsum dolor sit amet</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem. Aliquam erat
+                    volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.
                 </p>
             </div>
             <div class="col text-center pr-4 pl-4 mr-4 ml-4">
                 <i class="far fa-clock icon-details"></i>
                 <h1>Lorem ipsum dolor sit amet</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem. Aliquam erat
+                    volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.
                 </p>
             </div>
             <div class="col text-center">
                 <i class="fas fa-list icon-details"></i>
                 <h1>Lorem ipsum dolor sit amet</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem. Aliquam erat
+                    volutpat. Donec placerat nisl magna, et faucibus arcu condimentum sed.
                 </p>
             </div>
         </div>
@@ -132,7 +135,8 @@
         <div class="row">
             <div class="col">
                 <h3 class="mb-4">Lorem ipsum dolor</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem.  Aliquam erat volutpat. Donec placerat nisl magna.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at porttitor sem. Aliquam erat
+                    volutpat. Donec placerat nisl magna.</p>
             </div>
             <div class="col pl-4 ml-4">
                 <h3 class="mb-4">Lorem ipsum dolor</h3>
@@ -169,4 +173,4 @@
         </div>
     </div>
 </section>
-<%@include file="viewCommonParts/footer.jsp"%>
+<%@include file="viewCommonParts/footer.jsp" %>
