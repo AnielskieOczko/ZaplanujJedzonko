@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `scrumlab`.`recipe_plan` (
   CONSTRAINT `fk_recipe_plan_recipe1`
     FOREIGN KEY (`recipe_id`)
     REFERENCES `scrumlab`.`recipe` (`id`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_recipe_day_day_name1`
     FOREIGN KEY (`day_name_id`)
